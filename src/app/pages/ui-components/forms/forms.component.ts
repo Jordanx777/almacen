@@ -10,28 +10,26 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { Router, RouterModule } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatTimepickerModule } from '@angular/material/timepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { TaxistaService } from 'src/app/services/taxista.service';
-import { ActivatedRoute } from '@angular/router';
-// import Swal from 'sweetalert2/dist/sweetalert2.esm.js';
 import Swal from 'sweetalert2';
-// import { S } from '@angular/cdk/scrolling-module.d-ud2XrbF8';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { SessionService } from '../../../services/session.service';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatNativeDateModule } from '@angular/material/core';
-// import { MAC_ENTER } from '@angular/cdk/keycodes';
+import { ProductosService } from 'src/app/services/productos.service'; // Servicio para productos
 
+interface Categoria {
+  id: number;
+  nombre: string;
+}
 
-interface sexo {
-  value: string;
-  viewValue: string;
+interface Proveedor {
+  id: number;
+  nombre: string;
 }
 
 @Component({
-  selector: 'app-forms',
-  // providers: [provideNativeDateAdapter()],
+  selector: 'app-forms-productos',
   imports: [
     MatFormFieldModule,
     MatTooltipModule,
@@ -45,124 +43,73 @@ interface sexo {
     MatInputModule,
     MatCheckboxModule,
     RouterModule,
-    MatTimepickerModule,
     MatDatepickerModule,
     MatNativeDateModule,
   ],
   standalone: true,
-  templateUrl: './form-add-taxista.component.html',
+  templateUrl: './form-add-productos.component.html',
 })
-export class AppFormsComponent implements OnInit {
+export class AppFormsProductoComponent implements OnInit {
 
-  valueData: Date;
-  selectedValue: string;
   modoFormulario: 'agregar' | 'editar' = 'agregar';
   public formAgregar!: FormGroup;
 
-  sexo_s: sexo[] = [
-    { value: 'Masculino', viewValue: 'Masculino' },
-    { value: 'Femenino', viewValue: 'Femenino' },
+  categorias: Categoria[] = [
+    { id: 1, nombre: 'Camiseta' },
+    { id: 2, nombre: 'Pantalón' },
+    { id: 3, nombre: 'Chaqueta' },
+    { id: 4, nombre: 'Accesorio' },
   ];
+
+
+  
+
+  tallas: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+  proveedores: Proveedor[] = [
+    { id: 1, nombre: 'Proveedor 1' },
+    { id: 2, nombre: 'Proveedor 2' },
+  ];
+
+  sessionObj: any;
 
   constructor(
     private fb: FormBuilder,
-    private taxistaService: TaxistaService,
-    private route: ActivatedRoute,
+    private productosService: ProductosService,
     private router: Router,
     private sessionService: SessionService
   ) { }
-  sessionObj: any;
 
   ngOnInit(): void {
     const session = localStorage.getItem('session');
     if (session) {
       this.sessionObj = JSON.parse(session);
-      console.log('Usuario en sesión desde taxista:', this.sessionObj.user.username);
-      console.log('ID de usuario:', this.sessionObj.user.company_name);
-      console.log('Company code:', this.sessionObj.user.company_code);
-    } else {
-      console.log('No hay usuario en sesión');
+      console.log('Usuario en sesión:', this.sessionObj.user.username);
     }
-    // Verifica si hay una sesión activa
 
     this.formAgregar = this.crearFormularioAgregar();
-    this.route.paramMap.subscribe(params => {
-      const cedula = params.get('cedula');
-      if (cedula) {
-        this.modoFormulario = 'editar';
-        this.cargarDatosTaxista(cedula);
-      }
-    });
-
-    if (this.modoFormulario === 'agregar') {
-      this.formAgregar.get('cedula')?.valueChanges
-        .pipe(
-          debounceTime(1500), // espera 500ms sin escribir
-          distinctUntilChanged()
-        )
-        .subscribe(value => {
-          this.verificarCedula();
-        });
-    }
   }
 
   private crearFormularioAgregar(): FormGroup {
     return this.fb.group({
       nombre: ['', [Validators.required]],
-      numero_placa: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^[A-Z]{3}[0-9]{3}$/i), // 3 letras seguidas de 3 números
-        ],
-      ],
-      cedula: ['', [Validators.required]],
-      telefono: ['', [Validators.required]],
-      fecha_nacimiento: ['', [Validators.required]],
-      sexo: ['', [Validators.required]],
+      codigo: ['', [Validators.required]],
+      categoria: [null, [Validators.required]],
+      talla: [null, [Validators.required]],
+      color: ['', [Validators.required]],
+      cantidad: [0, [Validators.required, Validators.min(0)]],
+      precioCompra: [0, [Validators.required, Validators.min(0)]],
+      precioVenta: [0, [Validators.required, Validators.min(0)]],
+      proveedor: [null, [Validators.required]],
+      descripcion: [''],
+      imagen: [null],
       company_code: [this.sessionObj?.user?.company_code || '', [Validators.required]],
     });
   }
 
-  verificarCedula() {
-    const control = this.formAgregar.get('cedula');
-    const cedula = control?.value;
-
-    this.taxistaService.obtenerTaxistaPorCedula(cedula).subscribe((data) => {
-      if (data && data.taxista) {
-        control?.setErrors({ cedulaDuplicada: true }); // Marca error
-        Swal.fire({
-          icon: 'error',
-          title: 'Cédula duplicada',
-          text: 'Ya existe un taxista registrado con esa cédula.',
-        });
-      } else {
-        // Borra errores si está bien
-        if (control?.hasError('cedulaDuplicada')) {
-          control.setErrors(null);
-        }
-      }
-    });
-  }
-
-
-  cargarDatosTaxista(cedula: string) {
-    this.taxistaService.obtenerTaxistaPorCedula(cedula).subscribe((data) => {
-      if (data && data.taxista) {
-        this.formAgregar.patchValue(data.taxista);
-        this.formAgregar.get('cedula')?.disable();
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'No encontrado',
-          text: 'No se encontraron datos del taxista.',
-        });
-      }
-    });
-  }
-
-  volverAtras() {
-    window.history.back();
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    this.formAgregar.patchValue({ imagen: file });
   }
 
   onSubmit(): void {
@@ -176,83 +123,47 @@ export class AppFormsComponent implements OnInit {
     }
 
     if (this.modoFormulario === 'editar') {
-      // Si estamos en modo edición, solo actualizamos el taxista
-      this.formAgregar.get('cedula')?.enable();
-      // this.formAgregar.get('cedula')?.setValue(this.route.snapshot.paramMap.get('cedula'));
-      this.taxistaService.actualizarTaxista(this.formAgregar.value).subscribe({
+      // Actualizar producto
+      this.productosService.actualizarProducto(this.formAgregar.value).subscribe({
         next: () => {
           Swal.fire({
             icon: 'success',
             title: 'Actualizado',
-            text: 'Taxista actualizado correctamente.',
-          }).then(() => {
-            this.router.navigate(['/dashboard/view/tabla-taxistas']);
-          });
+            text: 'Producto actualizado correctamente.',
+          }).then(() => this.router.navigate(['/dashboard/view/tabla-productos']));
         },
         error: (err) => {
           console.error('Error al actualizar:', err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Ocurrió un error al actualizar el taxista.',
-          });
+          Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar el producto.' });
         }
       });
     } else {
-      const cedula = this.formAgregar.value.cedula;
-
-      this.taxistaService.obtenerTaxistaPorCedula(cedula).subscribe({
+      // Guardar nuevo producto
+      this.productosService.obtenerProductoPorCodigo(this.formAgregar.value.codigo).subscribe({
         next: (res) => {
-          if (res && res.taxista) {
+          if (res && res.producto) {
             Swal.fire({
               icon: 'error',
-              title: 'Cédula duplicada',
-              text: 'Ya existe un taxista registrado con esa cédula.',
-              html: `
-  Ya existe un taxista registrado con esa cédula. <br>
-  aquí están los datos:<br>
-  <strong>Nombre:</strong> ${res.taxista.nombre}<br>
-  <strong>Cédula:</strong> ${res.taxista.cedula}<br>
-  <strong>Teléfono:</strong> ${res.taxista.telefono}<br>
-  <strong>Placa:</strong> ${res.taxista.numero_placa}<br>
-  <strong>Sexo:</strong> ${res.taxista.sexo}<br>
-  <strong>Fecha de Nacimiento:</strong> ${res.taxista.fecha_nacimiento}<br>
-  `,
-
+              title: 'Código duplicado',
+              text: `Ya existe un producto con este código: ${res.producto.nombre}`,
             });
           } else {
-            // Si no existe, procede a guardar
-            console.log(this.formAgregar.value);
-            this.formAgregar.get('cedula')?.enable(); // Asegúrate de que la cédula esté habilitada
-            this.formAgregar.get('company_code')?.setValue(this.sessionObj.user.company_code); // Asegúrate de que el company_code esté configurado
-            this.taxistaService.guardarTaxista(this.formAgregar.value).subscribe({
+            this.productosService.guardarProducto(this.formAgregar.value).subscribe({
               next: () => {
-                Swal.fire({
-                  icon: 'success',
-                  title: '¡Guardado!',
-                  text: 'El taxista fue registrado correctamente.',
-                });
+                Swal.fire({ icon: 'success', title: '¡Guardado!', text: 'Producto registrado correctamente.' });
                 this.formAgregar.reset();
-                this.router.navigate(['/dashboard/view/tabla-taxistas']);
+                this.router.navigate(['/dashboard/view/tabla-productos']);
               },
               error: (err) => {
                 console.error('Error al guardar:', err);
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error al guardar',
-                  text: 'Hubo un problema al intentar registrar el taxista.',
-                });
+                Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo registrar el producto.' });
               }
             });
           }
         },
         error: (err) => {
-          console.error('Error al verificar cédula:', err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo verificar la cédula. Intenta nuevamente.',
-          });
+          console.error('Error al verificar código:', err);
+          Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo verificar el código del producto.' });
         }
       });
     }

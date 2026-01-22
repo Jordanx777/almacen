@@ -27,8 +27,33 @@ export const navItems: NavItem[] = [
   //   // chipContent: 'PRO',
   // },
 
+
+ /*agregar productos*/
+
   {
-    displayName: 'Reportes de pagos',
+    displayName: 'Agregar Productos',
+    iconName: 'mdi:plus-circle',
+    route: '/dashboard/view/form-producto',
+    // chip: true,
+    external: true,
+    chipClass: 'bg-secondary text-white',
+    // chipContent: 'PRO',
+  },
+
+  /*lista de productos*/
+
+    {
+    displayName: 'Tabla de Productos',
+    iconName: 'mdi:taxi',
+    route: '/dashboard/view/tabla-producto',
+    // chip: true,
+    external: true,
+    chipClass: 'bg-secondary text-white',
+    // chipContent: 'PRO',
+  },
+
+  {
+    displayName: 'Reportes de Ventas',
     iconName: 'solar:widget-line-duotone',
     route: '/dashboard/view/reporte-comisiones',
     // chip: true,
@@ -47,28 +72,12 @@ export const navItems: NavItem[] = [
   // },
 
 
-  {
+ // {
     // divider: true,
-    navCap: 'Taxistas',
-  },
-  {
-    displayName: 'Agregar Taxistas',
-    iconName: 'line-md:account-add',
-    route: '/dashboard/view/form-taxista',
-    // chip: true,
-    external: true,
-    chipClass: 'bg-secondary text-white',
-    // chipContent: 'PRO',
-  },
-  {
-    displayName: 'Tabla de Taxistas',
-    iconName: 'mdi:taxi',
-    route: '/dashboard/view/tabla-taxistas',
-    // chip: true,
-    external: true,
-    chipClass: 'bg-secondary text-white',
-    // chipContent: 'PRO',
-  },
+    //navCap: 'Taxistas',
+  //},
+ 
+
   // {
   //   displayName: 'Seleccionar taxistas',
   //   iconName: 'solar:chat-round-line-line-duotone',

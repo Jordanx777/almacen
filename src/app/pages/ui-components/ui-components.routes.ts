@@ -6,7 +6,7 @@ import { AppChipsComponent } from './chips/chips.component';
 import { AppListsComponent } from './lists/lists.component';
 import { AppMenuComponent } from './menu/menu.component';
 import { AppTooltipsComponent } from './tooltips/tooltips.component';
-import { AppFormsComponent } from './forms/forms.component';
+import { AppFormsProductoComponent } from './forms/forms.component';
 import { AppTablesComponent } from './tables/tables.component';
 import { FormAddReservaComponent } from './forms/form-add-reserva.component';
 import { AppFormComisionesComponent } from './forms/form-comisiones.component';
@@ -92,13 +92,13 @@ export const UiComponentsRoutes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'form-taxista',
-        component: AppFormsComponent,
+        path: 'form-producto',
+        component: AppFormsProductoComponent,
         canActivate: [AuthGuard]
       },
       {
         path: 'editar-taxista/:cedula',
-        component: AppFormsComponent,
+        component: AppFormsProductoComponent,
         canActivate: [AuthGuard]
       },
 
