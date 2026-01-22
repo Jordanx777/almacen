@@ -1,0 +1,195 @@
+<mat-card class="card-reporte">
+  <mat-card-title>📊 Reporte de Pagos</mat-card-title>
+  <mat-card-content>
+
+    <!-- FILTROS EN PC -->
+    <div class="container-fluid filtros-pc">
+      <div class="row g-3">
+        <div class="col-md-2 col-sm-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Cédula</mat-label>
+            <input matInput [(ngModel)]="cedulaFiltro" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2 col-sm-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Estado</mat-label>
+            <mat-select [(ngModel)]="estadoFiltro">
+              <mat-option value="">Todos</mat-option>
+              <mat-option value="pagado">Pagado</mat-option>
+              <mat-option value="abonado">Abonado</mat-option>
+              <mat-option value="no-pagado">No pagado</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2 col-sm-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Fecha inicio</mat-label>
+            <input matInput [matDatepicker]="pickerInicio" [(ngModel)]="fechaInicio" />
+            <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+            <mat-datepicker #pickerInicio></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2 col-sm-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Fecha fin</mat-label>
+            <input matInput [matDatepicker]="pickerFin" [(ngModel)]="fechaFin" />
+            <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFin></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <!-- BOTONES -->
+        <div class="col-md-2 col-sm-3 d-flex align-items-center" style="gap: 5px; margin-top: -2%; margin-left: 16%;">
+          <button mat-raised-button class="btn-azul-personalizado" (click)="cargarReporte()">
+            <mat-icon>search</mat-icon><span class="btn-text ms-1">Buscar</span>
+          </button>
+          <button mat-raised-button class="btn-verde" (click)="exportarExcel()">
+            <mat-icon>download</mat-icon><span class="btn-text ms-1">Exportar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTROS EN MOBILE -->
+    <div class="filtros-mobile">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Filtros</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-form-field appearance="outline" class="w-100 mb-2">
+          <mat-label>Cédula</mat-label>
+          <input matInput [(ngModel)]="cedulaFiltro" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-2">
+          <mat-label>Estado</mat-label>
+          <mat-select [(ngModel)]="estadoFiltro">
+            <mat-option value="">Todos</mat-option>
+            <mat-option value="pagado">Pagado</mat-option>
+            <mat-option value="abonado">Abonado</mat-option>
+            <mat-option value="no-pagado">No pagado</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-2">
+          <mat-label>Fecha inicio</mat-label>
+          <input matInput [matDatepicker]="pickerInicio2" [(ngModel)]="fechaInicio" />
+          <mat-datepicker-toggle matSuffix [for]="pickerInicio2"></mat-datepicker-toggle>
+          <mat-datepicker #pickerInicio2></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-2">
+          <mat-label>Fecha fin</mat-label>
+          <input matInput [matDatepicker]="pickerFin2" [(ngModel)]="fechaFin" />
+          <mat-datepicker-toggle matSuffix [for]="pickerFin2"></mat-datepicker-toggle>
+          <mat-datepicker #pickerFin2></mat-datepicker>
+        </mat-form-field>
+
+        <div class="botones-container mt-2">
+          <button mat-raised-button class="btn-azul-personalizado w-100" (click)="cargarReporte()">
+            <mat-icon>search</mat-icon><span class="btn-text ms-1">Buscar</span>
+          </button>
+          <button mat-raised-button class="btn-verde w-100" (click)="exportarExcel()">
+            <mat-icon>download</mat-icon><span class="btn-text ms-1">Exportar</span>
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+    <!-- TABLA -->
+    <div class="table-container mt-4">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+        <!-- Columnas -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let row" (click)="abrirDetalleUsuario(row)" style="cursor: pointer;">
+            {{ row.nombre }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let row" (click)="abrirDetalleUsuario(row)" style="cursor: pointer;">
+            {{ row.fecha | date:'d MMMM' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cedula">
+          <th mat-header-cell *matHeaderCellDef>Cédula</th>
+          <td mat-cell *matCellDef="let row" (click)="abrirDetalleUsuario(row)" style="cursor: pointer;">
+            {{ row.cedula }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let row" (click)="abrirDetalleUsuario(row)" style="cursor: pointer;">
+            {{ row.estado }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="total_a_pagar">
+          <th mat-header-cell *matHeaderCellDef>Total a pagar</th>
+          <td mat-cell *matCellDef="let row" (click)="abrirDetalleUsuario(row)" style="cursor: pointer;">
+            {{ row.total_a_pagar | currency:'COP':'symbol':'1.0-0' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="pagado">
+          <th mat-header-cell *matHeaderCellDef>Pagado</th>
+          <td mat-cell *matCellDef="let row" (click)="abrirDetalleUsuario(row)" style="cursor: pointer;">
+            {{ row.pagado | currency:'COP':'symbol':'1.0-0' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="pendiente">
+          <th mat-header-cell *matHeaderCellDef>Pendiente</th>
+          <td mat-cell *matCellDef="let row" (click)="abrirDetalleUsuario(row)" style="cursor: pointer;">
+            {{ row.total_a_pagar - row.pagado | currency:'COP':'symbol':'1.0-0' }}
+          </td>
+        </ng-container>
+
+        <!-- Filas -->
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+      </table>
+
+      <!-- Paginador -->
+      <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!-- GRÁFICA GENERAL -->
+    <mat-card class="card-grafica" *ngIf="graficaData">
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="graficaData"
+          [type]="'doughnut'"
+          [options]="graficaOptions">
+        </canvas>
+      </div>
+    </mat-card>
+
+    <!-- DIÁLOGO DETALLE DE USUARIO -->
+   <ng-template #detalleUsuarioDialog let-data="data">
+  <h2 mat-dialog-title>Detalle del Usuario</h2>
+  <mat-dialog-content>
+<p><strong>Nombre:</strong> {{ usuarioSeleccionado?.nombre }}</p>
+<p><strong>Cédula:</strong> {{ usuarioSeleccionado?.cedula }}</p>
+<p><strong>Fecha:</strong> {{ usuarioSeleccionado?.fecha | date:'d MMMM' }}</p>
+<p><strong>Estado:</strong> {{ usuarioSeleccionado?.estado }}</p>
+<p><strong>Total a pagar:</strong> {{ usuarioSeleccionado?.total_a_pagar | currency:'COP':'symbol':'1.0-0' }}</p>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+  </mat-dialog-actions>
+</ng-template>
+
+
+  </mat-card-content>
+</mat-card>

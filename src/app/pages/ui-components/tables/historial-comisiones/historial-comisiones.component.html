@@ -1,0 +1,213 @@
+<mat-card class="mt-4 mx-3">
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="text-center">Historial de Comisiones</h1>
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- FILTROS -->
+    <div class="container-fluid filtros-pc filtros-grandes">
+      <div class="row g-3">
+       
+         <div class="col-md-2 col-sm-3">
+           <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Estado</mat-label>
+            <mat-select [(ngModel)]="estadoFiltro">
+              <mat-option value="">Todos</mat-option>
+              <mat-option value="abonado">Abonado</mat-option>
+              <mat-option value="pagado">Pagado</mat-option>
+              <mat-option value="no-pagado">No pagado</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+         </div>
+        
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Fecha inicio</mat-label>
+            <input matInput [matDatepicker]="pickerInicio" [(ngModel)]="fechaInicio">
+            <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+            <mat-datepicker #pickerInicio></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Fecha fin</mat-label>
+            <input matInput [matDatepicker]="pickerFin" [(ngModel)]="fechaFin">
+            <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFin></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2 d-flex align-items-center">
+          <button mat-raised-button class="btn-azul-personalizado w-100" style=" margin-top: -5%; margin-left: 290%; " (click)="cargarComisiones()">
+            <mat-icon>search</mat-icon>
+            <span class="ms-1">Buscar</span>
+          </button>
+        </div>
+      
+      </div>
+    </div>
+
+    <!-- FILTROS MOBILE -->
+    <div class="filtros-mobile">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Filtros</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="p-3">
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Estado</mat-label>
+            <mat-select [(ngModel)]="estadoFiltro">
+              <mat-option value="">Todos</mat-option>
+              <mat-option value="abonado">Abonado</mat-option>
+              <mat-option value="pagado">Pagado</mat-option>
+              <mat-option value="no-pagado">No pagado</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Fecha inicio</mat-label>
+            <input matInput [matDatepicker]="pickerInicioMobile" [(ngModel)]="fechaInicio">
+            <mat-datepicker-toggle matSuffix [for]="pickerInicioMobile"></mat-datepicker-toggle>
+            <mat-datepicker #pickerInicioMobile></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Fecha fin</mat-label>
+            <input matInput [matDatepicker]="pickerFinMobile" [(ngModel)]="fechaFin">
+            <mat-datepicker-toggle matSuffix [for]="pickerFinMobile"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFinMobile></mat-datepicker>
+          </mat-form-field>
+
+          <button mat-raised-button class="btn-azul-personalizado w-100" (click)="cargarComisiones()">
+            <span class="ms-1">Buscar</span>
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+    <!-- TABLA DE COMISIONES -->
+   
+      <div class="table-container mt-4">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let c" (click)="abrirDetalle(c)" style="cursor: pointer;">{{ c.nombre }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="placa">
+            <th mat-header-cell *matHeaderCellDef>Placa</th>
+            <td mat-cell *matCellDef="let c" (click)="abrirDetalle(c)" style="cursor: pointer;">{{ c.numero_placa }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="referidos">
+            <th mat-header-cell *matHeaderCellDef>Referidos</th>
+            <td mat-cell *matCellDef="let c" (click)="abrirDetalle(c)" style="cursor: pointer;">{{ c.personas_referidas }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let c" (click)="abrirDetalle(c)" style="cursor: pointer;">{{ c.total_a_pagar }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="pagado">
+            <th mat-header-cell *matHeaderCellDef>Pagado</th>
+            <td mat-cell *matCellDef="let c" (click)="abrirDetalle(c)" style="cursor: pointer;">{{ c.pagado }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef>Estado</th>
+            <td mat-cell *matCellDef="let c" [ngStyle]="{color: c.estado == 'pagado' ? 'green' : c.estado == 'abonado' ? 'orange' : 'red'}">
+              {{ c.estado }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let c">
+              <div  class="d-flex gap-2 align-items-center flex-nowrap" style="display: flex;;">
+                <button id="botones" *ngIf="c.estado !== 'pagado'" mat-button color="accent" (click)="pagarCompleto(c)">Pagado</button>
+                <button id="botones1" *ngIf="c.estado !== 'pagado'" mat-button color="warn" (click)="abrirDialogAbonar(c)">Abonar</button>
+                <h4 *ngIf="c.estado === 'pagado'" class="m-0">Pagado</h4>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+
+      <!-- PAGINADOR -->
+      <!-- <mat-paginator #paginator
+                     [length]="dataSource.data.length"
+                     [pageSize]="5"
+                     [pageSizeOptions]="[5, 10, 20]"
+                     aria-label="Paginador de comisiones">
+      </mat-paginator> -->
+<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      <div *ngIf="dataSource.data.length === 0" class="text-center mt-3">
+        <p>No hay comisiones registradas.</p>
+      </div>
+
+      <!-- Botón agregar comisión -->
+      <div class="mt-4">
+        <button mat-raised-button class="btn-azul-personalizado w-100 w-md-auto" id="btobuscar" (click)="abrirFormulario(dataSource.data[0])">
+          <mat-icon>add</mat-icon>
+          <span class="btn-text ms-1">Agregar Comisión para {{ dataSource.data[0]?.nombre }}</span>
+        </button>
+      </div>
+    
+
+    <!-- RESUMEN DE COMISIONES -->
+    <mat-card class="card-grafica" >
+      <mat-card-title style="font-size: 16px;">Resumen de Comisiones</mat-card-title>
+     
+        
+          
+          <table class="table table-bordered w-100">
+            <thead class="table-light">
+              <tr>
+                <th >Concepto</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total a pagar</td>
+                <td>{{ totalComisiones | number:'1.0-0' }}</td>
+              </tr>
+              <tr>
+                <td>Total pagado</td>
+                <td>{{ totalPagado | number:'1.0-0' }}</td>
+              </tr>
+            </tbody>
+          </table>
+       
+     
+    </mat-card>
+  </mat-card-content>
+</mat-card>
+
+<!-- DIALOG DETALLE -->
+<ng-template #dialogDetalle let-data>
+  <mat-dialog-content class="dialog-content">
+    <h3 class="mb-3 text-center">🧾 Detalle Comisión</h3>
+    <div class="totales">
+      <p><strong>Nombre:</strong> {{ data.nombre }}</p>
+      <p><strong>Placa:</strong> {{ data.numero_placa }}</p>
+      <p><strong>Referidos:</strong> {{ data.personas_referidas }}</p>
+      <p><strong>Total a pagar:</strong> {{ data.total_a_pagar | currency:'COP':'symbol' }}</p>
+      <p><strong>Pagado:</strong> {{ data.pagado | currency:'COP':'symbol' }}</p>
+      <p><strong>Estado:</strong> {{ data.estado }}</p>
+    </div>
+    <div class="text-center mt-3">
+      <button mat-raised-button color="primary" mat-dialog-close>Cerrar</button>
+    </div>
+  </mat-dialog-content>
+</ng-template>

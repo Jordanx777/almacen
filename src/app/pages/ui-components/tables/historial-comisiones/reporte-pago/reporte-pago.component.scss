@@ -1,0 +1,239 @@
+.card-reporte {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ================= FILTROS ================= */
+
+/* Filtros Escritorio */
+.filtros-escritorio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.filtros-escritorio mat-form-field {
+  flex: 1 1 200px;
+  min-width: 180px;
+}
+
+/* Filtros Responsive - agrupados */
+.filtros-responsive {
+  display: none;
+}
+
+.filtros-responsive .mat-expansion-panel {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.filtros-responsive .mat-form-field,
+.filtros-responsive .botones-container button {
+  width: 100% !important;
+}
+
+/* ================= BOTONES ================= */
+
+.botones-container {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-verde,
+.btn-azul-personalizado,
+.btn-ver-tabla {
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-azul-personalizado {
+  background: linear-gradient(135deg, #000000, #434343) !important;
+  color: white !important;
+  padding: 8px 16px;
+  font-weight: 600;
+  border: none;
+}
+
+.btn-azul-personalizado:hover {
+  background: linear-gradient(135deg, #1a1a1a, #5a5a5a) !important;
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.btn-verde {
+  background-color: #28a745 !important;
+}
+.btn-verde:hover {
+  background-color: #218838 !important;
+}
+
+.btn-ver-tabla {
+  background-color: #17a2b8 !important;
+}
+.btn-ver-tabla:hover {
+  background-color: #138496 !important;
+}
+
+.btn-text {
+  margin-left: 6px;
+}
+
+/* ================= TABLA ================= */
+.table-container {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.table-container table,
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-container thead {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+
+.table-container th,
+.table-container td,
+.mat-header-cell,
+.mat-cell {
+  padding: 6px 8px !important;
+  text-align: center;
+  border-bottom: 1px solid #dee2e6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.mat-row,
+.mat-header-row {
+  height: 36px;
+}
+
+.table-container tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.table-container tr:hover {
+  background-color: #e2f0ff;
+  transition: background-color 0.3s ease;
+}
+
+/* ================= MODAL & GRAFICA ================= */
+.dialog-content {
+  padding: 20px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.card-grafica {
+  max-width: 100%;
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.chart-container {
+  width: 260px;
+  height: 260px;
+  margin: 0 auto;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-container canvas {
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* ✅ Mobile: mostrar filtros responsive, ocultar escritorio */
+@media (max-width: 768px) {
+  .filtros-pc {
+    display: none !important;
+  }
+
+  .filtros-mobile {
+    display: block !important;
+  }
+
+  .table-container table {
+    font-size: 12px;
+  }
+
+  .btn-verde,
+  .btn-azul-personalizado,
+  .btn-ver-tabla {
+    width: 40px;
+    height: 40px;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    font-size: 0;
+    margin-left: 10%;
+    min-width: 0 !important;
+  }
+
+  .btn-verde mat-icon,
+  .btn-azul-personalizado mat-icon,
+  .btn-ver-tabla mat-icon {
+    font-size: 20px;
+    margin-left: 10%;
+  }
+
+  .btn-text {
+    display: none;
+  }
+
+  .dialog-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .chart-container {
+    width: 200px;
+    height: 200px;
+    margin-left: -10%;
+  }
+}
+
+/* ✅ Escritorio: ocultar filtros responsive */
+@media (min-width: 769px) {
+  .filtros-mobile {
+    display: none !important;
+  }
+}
+
+
+

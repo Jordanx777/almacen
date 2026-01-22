@@ -1,0 +1,68 @@
+<form>
+  <div class="d-flex justify-content-end align-items-center flex-wrap gap-2 mt-4 ">
+    <div class="col-lg-3">
+      <!-- <mat-label class="f-w-600 m-b-8 d-block">Observaciones</mat-label> -->
+      <mat-form-field appearance="outline" class="w-100 d-flex align-items-center" color="primary">
+        <input #buscador matInput placeholder="Buscador" name="searchTerm" autocomplete="off"
+          (keyup)="buscar(buscador.value)" />
+        <button mat-icon-button matSuffix aria-label="Buscar">
+          <mat-icon>search</mat-icon>
+        </button>
+        <!-- <mat-error>Este campo es requerido.</mat-error> -->
+      </mat-form-field>
+    </div>
+  </div>
+</form>
+<div class="row justify-content-center">
+  <div *ngIf="cardimgs.length === 0" class="d-flex flex-column justify-content-center align-items-center text-muted"
+    style="height: 60vh;">
+    <div class="text-center">
+      <mat-icon>search_off</mat-icon><br>
+      <strong class="mt-2">No se encontraron resultados</strong>
+    </div>
+  </div>
+
+  @for(cardimg of cardimgs; track cardimg.imgSrc) {
+
+
+  <div class="col-lg-3">
+    <mat-card class="cardWithShadow position-relative overflow-hidden">
+      <div class="position-relative">
+        <img mat-card-image src="{{ cardimg.imgSrc }}" alt="Photo of a Shiba Inu" class="w-100" />
+        <div class="card-overlay h-100 d-flex align-items-end justify-content-end">
+          <span class="f-s-12 f-w-600 m-y-16 m-r-16 p-y-4 p-x-8 rounded-pill bg-white">{{ cardimg.time }}</span>
+        </div>
+      </div>
+
+      <mat-card-content class="p-y-20">
+        <div class="user-category">
+          <div class="m-b-20">
+            <img [src]="'/assets/images/profile/user-' + imagenesPorId[cardimg.id] + '.jpg'" class="rounded-circle"
+              width="40" />
+
+          </div>
+          <span class="f-s-12 m-y-16 f-w-600 p-x-8 p-y-4 bg-light rounded-pill">
+            {{ cardimg.category }}
+          </span>
+        </div>
+
+        <mat-card-title class="m-t-20 text-hover-primary cursor-pointer"><a routerLink="['/']" class="hover-text">{{
+            cardimg.nombre
+            }}</a></mat-card-title>
+        <div class="d-flex align-items-center justify-content-center m-t-24">
+          <div class="d-flex align-items-center">
+            <span class="m-r-12 f-s-14 d-flex align-items-center">
+              <i-tabler name="users" class="icon-18 m-r-4"></i-tabler>{{ cardimg.views }}</span>
+            <span class="f-s-14 d-flex align-items-center"><i-tabler name="message-2"
+                class="icon-18 m-r-4"></i-tabler>{{ cardimg.comments }}</span>
+          </div>
+          <!-- <span class="m-l-auto f-s-14 d-flex align-items-center">
+            <i-tabler name="point" class="icon-14 m-r-4 d-flex"></i-tabler>
+            {{ cardimg.date }}
+          </span> -->
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  }
+</div>

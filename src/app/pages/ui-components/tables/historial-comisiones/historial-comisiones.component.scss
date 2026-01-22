@@ -1,0 +1,333 @@
+/* ===== Estilos base ===== */
+
+/* ================= TABLA ================= */
+.table-container {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.card-grafica {
+  max-width: 100%;
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.table-container table,
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-container thead {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+
+.table-container th,
+.table-container td,
+.mat-header-cell,
+.mat-cell {
+  padding: 6px 8px !important;
+  text-align: center;
+  border-bottom: 1px solid #dee2e6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.table-container tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.table-container tr:hover {
+  background-color: #e2f0ff;
+  transition: background-color 0.3s ease;
+}
+
+th, td {
+  text-align: center;
+  padding: 12px;
+}
+
+#btobuscar{
+  width: 30%;
+  margin-top: 2%;
+  margin-left: 35%;
+}
+
+thead {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  border-bottom: 2px solid #ccc;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #eaf4ff;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.caja {
+  margin-top: 1%;
+}
+
+/* Estados */
+.activo {
+  color: green;
+  font-weight: bold;
+}
+
+.inactivo {
+  color: red;
+  font-weight: bold;
+}
+
+.abonado {
+  color: orange;
+  font-weight: bold;
+}
+
+/* Botones */
+.btn-verde {
+  background-color: #28a745 !important;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-verde:hover {
+  background-color: #218838 !important;
+}
+
+.btn-azul {
+  background-color: #007bff !important;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-azul:hover {
+  background-color: #0056b3 !important;
+}
+
+/* Botón azul bacano */
+.btn-azul-personalizado {
+background: linear-gradient(135deg, #000000, #434343) !important;
+  color: white !important;
+  padding: 8px 16px;
+  font-weight: 600;
+  border: none;
+}
+
+.btn-azul-personalizado:hover {
+  background: linear-gradient(135deg, #1a1a1a, #5a5a5a) !important;
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.eliminar:hover {
+  color: red;
+  font-weight: bold;
+}
+
+.editar:hover {
+  color: rgb(228, 188, 13);
+}
+
+/* Botones dentro de tabla */
+table button {
+  margin: 0 2px;
+}
+
+/* Contenedor de botones */
+.botones-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* Card styling */
+mat-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 2rem;
+  background-color: #ffffff;
+}
+
+mat-card-title h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Inputs y selects */
+input[type="date"], select {
+  margin-right: 1rem;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* ===== Filtros Escritorio ===== */
+
+
+
+.filtros-escritorio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+    
+}
+
+.filtros-escritorio mat-form-field {
+  min-width: 1 1 200px;
+  min-width: 180px;
+}
+
+.filtros-escritorio button {
+  margin-top: -4%;
+}
+
+
+
+
+
+
+
+
+
+
+#botones {
+  background: linear-gradient(135deg, #28a745, #218838);
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#botones:hover {
+  background: linear-gradient(135deg, #218838, #1e7e34);
+  transform: scale(1.05);
+}
+
+#botones1 {
+  background: linear-gradient(135deg, #ffc107, #ff9800);
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#botones1:hover {
+  background: linear-gradient(135deg, #ff9800, #e67e00);
+  transform: scale(1.05);
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ================= RESPONSIVE ================= */
+
+/* ✅ Mobile: mostrar filtros responsive, ocultar escritorio */
+@media (max-width: 768px) {
+
+
+  .filtros-pc{
+    display: none !important;
+  }
+
+  .filtros-mobile{
+    display: block !important;
+    margin-bottom: 10%;
+  }
+
+  .table-container table {
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+
+  .btn-verde,
+  .btn-azul {
+    width: 40px;
+    height: 40px;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    font-size: 0;
+    min-width: 0 !important;
+  }
+
+  .btn-verde mat-icon,
+  .btn-azul mat-icon {
+    font-size: 20px;
+  }
+
+  .btn-text {
+    display: none;
+  }
+
+  .botones-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .filtros-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filtros-container button {
+    width: 100%;
+  }
+  
+  
+}
+
+
+  /* ✅ Escritorio: ocultar filtros responsive */
+@media (min-width: 769px) {
+  .filtros-mobile {
+    display: none !important;
+    
+  } }

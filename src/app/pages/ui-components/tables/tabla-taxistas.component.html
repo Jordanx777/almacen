@@ -1,0 +1,97 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <mat-card-title class="m-b-0">Tabla taxistas</mat-card-title>
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-4">
+
+      <!-- Filtro a la izquierda -->
+      <div class="caja">
+        <mat-form-field appearance="outline" color="primary" style="width: 120px; margin: 0;">
+          <mat-label>Filtrar</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ej: Maia" #input />
+        </mat-form-field>
+      </div>
+
+      <!-- Botones a la derecha -->
+      <div class="d-flex align-items-center  flex-wrap">
+        <!-- Botón verde -->
+        
+<button mat-raised-button matTooltip="Exportar Excel" class="btn-verde d-flex align-items-center" (click)="exportarExcelTaxistas()">
+  <mat-icon>file_download</mat-icon>
+  <span class="btn-text ms-1">Exportar Excel</span>
+</button>
+
+<!-- Botón azul -->
+<button mat-raised-button matTooltip="Agregar Taxista" class="btn-azul d-flex align-items-center" (click)="irAgregarTaxista()">
+  <mat-icon>person_add</mat-icon>
+  <span class="btn-text ms-1">Agregar Taxista</span>
+</button>
+
+      </div>
+
+    </div>
+
+    <div class="table-responsive mt-4">
+      <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+        <!-- Nombre -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 f-s-14">Nombre</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="clickable" (click)="abrirDetalleTaxista(row)">{{ row.nombre }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Cédula -->
+        <ng-container matColumnDef="cedula">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 f-s-14">Cédula</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="clickable" (click)="abrirDetalleTaxista(row)">{{ row.cedula }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Teléfono -->
+        <ng-container matColumnDef="telefono">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 f-s-14">Teléfono</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="clickable" (click)="abrirDetalleTaxista(row)">{{ row.telefono }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Placa -->
+        <ng-container matColumnDef="placa">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 f-s-14">Placa</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="clickable" (click)="abrirDetalleTaxista(row)">{{ row.numero_placa }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Acciones -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="text-nowrap f-w-600 m-10">Acciones</th>
+          <td mat-cell *matCellDef="let row" style="display: flex; align-items: center; gap: 12px;">
+            <button mat-icon-button color="primary" class="icon-clean-button" (click)="editarTaxista(row)">
+              <mat-icon class="editar">edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" class="icon-clean-button" (click)="eliminarTaxista(row)">
+              <mat-icon class="eliminar">delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Sin datos -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell text-center" colspan="7">No hay coincidencias.</td>
+        </tr>
+        <div *ngIf="dataSource.data.length === 0" class="no-resultados text-center">
+          No hay coincidencias.
+        </div>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
