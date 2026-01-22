@@ -45,7 +45,7 @@ export const navItems: NavItem[] = [
     {
     displayName: 'Tabla de Productos',
     iconName: 'mdi:taxi',
-    route: '/dashboard/view/tabla-producto',
+    route: '/dashboard/view/tabla-productos',
     // chip: true,
     external: true,
     chipClass: 'bg-secondary text-white',

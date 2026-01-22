@@ -14,7 +14,7 @@ import { AppBlogCardsComponent } from 'src/app/components/blog-card/blog-card.co
 import { LandingPageComponent } from '../landing-page/landing-page.component';
 import { AppTotalIncomeComponent } from 'src/app/components/total-income/total-income.component';
 import { AppEarningReportsComponent } from 'src/app/components/earning-reports/earning-reports.component';
-import { TablaTaxistasComponent } from './tables/tabla-taxistas.component';
+import { TablaProductosComponent } from './tables/tabla-productos.component';
 import { TablaReservasComponent } from './tables/tabla-reservas.component';
 import { EstadisticasComponent } from './estadisticas/estadisticas.component';
 import { TablaAdministracionComponent } from './tables/tabla-administracion.component';
@@ -67,8 +67,8 @@ export const UiComponentsRoutes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'tabla-taxistas',
-        component: TablaTaxistasComponent,
+        path: 'tabla-productos',
+        component: TablaProductosComponent,
         canActivate: [AuthGuard]
       },
       {
