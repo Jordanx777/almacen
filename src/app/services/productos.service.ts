@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductosService {
 
-  private apiUrl = 'http://localhost:3000/productos'; // Cambia esta URL según tu backend
+  private apiUrl = 'http://localhost/almacen-backend'; // Cambia esta URL según tu backend
 
   constructor(private http: HttpClient) { }
 

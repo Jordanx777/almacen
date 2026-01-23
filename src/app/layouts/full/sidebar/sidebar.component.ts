@@ -8,12 +8,12 @@ import {
 // import { BrandingComponent } from './branding.component';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { MaterialModule } from '../../../material.module';
-import { BrandingComponent } from './branding.component';
+//import { BrandingComponent } from './branding.component';
 // import { MaterialModule } from 'src/app/material.module';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [BrandingComponent,TablerIconsModule, MaterialModule],
+  imports: [/*BrandingComponent*/TablerIconsModule, MaterialModule],
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
