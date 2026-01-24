@@ -1,0 +1,56 @@
+<h2>Editar producto</h2>
+
+<mat-form-field class="w-100">
+  <mat-label>Nombre</mat-label>
+  <input matInput [(ngModel)]="producto.nombre">
+</mat-form-field>
+
+<mat-form-field class="w-100">
+  <mat-label>Código</mat-label>
+  <input matInput [(ngModel)]="producto.codigo">
+</mat-form-field>
+
+<mat-form-field class="w-100">
+  <mat-label>Categoría</mat-label>
+  <input matInput [(ngModel)]="producto.categoria_nombre">
+</mat-form-field>
+
+<mat-form-field class="w-100">
+  <mat-label>Talla</mat-label>
+  <input matInput [(ngModel)]="producto.talla">
+</mat-form-field>
+
+<mat-form-field class="w-100">
+  <mat-label>Color</mat-label>
+  <input matInput [(ngModel)]="producto.color">
+</mat-form-field>
+
+<mat-form-field class="w-100">
+  <mat-label>Cantidad</mat-label>
+  <input matInput type="number" [(ngModel)]="producto.cantidad">
+</mat-form-field>
+
+<mat-form-field class="w-100">
+  <mat-label>Precio compra</mat-label>
+  <input matInput type="number" [(ngModel)]="producto.precioCompra">
+</mat-form-field>
+
+<mat-form-field class="w-100">
+  <mat-label>Precio venta</mat-label>
+  <input matInput type="number" [(ngModel)]="producto.precioVenta">
+</mat-form-field>
+
+<mat-form-field class="w-100">
+  <mat-label>Proveedor</mat-label>
+  <input matInput [(ngModel)]="producto.proveedor_nombre">
+</mat-form-field>
+
+<mat-form-field class="w-100">
+  <mat-label>Descripción</mat-label>
+  <textarea matInput rows="3" [(ngModel)]="producto.descripcion"></textarea>
+</mat-form-field>
+
+<div style="display:flex; justify-content:flex-end; gap:10px">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+</div>

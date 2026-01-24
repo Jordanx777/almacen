@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,14 +17,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { Router, RouterModule } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import Swal from 'sweetalert2';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { SessionService } from '../../../services/session.service';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatNativeDateModule } from '@angular/material/core';
-import { ProductosService } from 'src/app/services/productos.service'; // Servicio para productos
+import { MatTooltipModule } from '@angular/material/tooltip';
 
+import Swal from 'sweetalert2';
+import { SessionService } from '../../../services/session.service';
+
+/* ===================== INTERFACES ===================== */
 interface Categoria {
   id: number;
   nombre: string;
@@ -28,31 +34,34 @@ interface Proveedor {
   nombre: string;
 }
 
+/* ===================== COMPONENT ===================== */
 @Component({
   selector: 'app-forms-productos',
+  standalone: true,
   imports: [
-    MatFormFieldModule,
-    MatTooltipModule,
-    MatSelectModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatRadioModule,
+    RouterModule,
+
+    MatFormFieldModule,
+    MatSelectModule,
     MatButtonModule,
     MatCardModule,
     MatInputModule,
     MatCheckboxModule,
-    RouterModule,
+    MatRadioModule,
+    MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  standalone: true,
   templateUrl: './form-add-productos.component.html',
 })
 export class AppFormsProductoComponent implements OnInit {
 
   modoFormulario: 'agregar' | 'editar' = 'agregar';
-  public formAgregar!: FormGroup;
+  formAgregar!: FormGroup;
+  sessionObj: any;
 
   categorias: Categoria[] = [
     { id: 1, nombre: 'Camiseta' },
@@ -61,9 +70,6 @@ export class AppFormsProductoComponent implements OnInit {
     { id: 4, nombre: 'Accesorio' },
   ];
 
-
-  
-
   tallas: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   proveedores: Proveedor[] = [
@@ -71,106 +77,88 @@ export class AppFormsProductoComponent implements OnInit {
     { id: 2, nombre: 'Proveedor 2' },
   ];
 
-  sessionObj: any;
-
   constructor(
     private fb: FormBuilder,
-    private productosService: ProductosService,
     private router: Router,
     private sessionService: SessionService
-  ) { }
+  ) {}
 
+  /* ===================== INIT ===================== */
   ngOnInit(): void {
     const session = localStorage.getItem('session');
     if (session) {
       this.sessionObj = JSON.parse(session);
-      console.log('Usuario en sesión:', this.sessionObj.user.username);
     }
 
-    this.formAgregar = this.crearFormularioAgregar();
+    this.formAgregar = this.crearFormulario();
   }
 
-  private crearFormularioAgregar(): FormGroup {
+  /* ===================== FORM ===================== */
+  private crearFormulario(): FormGroup {
     return this.fb.group({
-      nombre: ['', [Validators.required]],
-      codigo: ['', [Validators.required]],
-      categoria: [null, [Validators.required]],
-      talla: [null, [Validators.required]],
-      color: ['', [Validators.required]],
+      id: [null],
+      nombre: ['', Validators.required],
+      categoria: [null, Validators.required],
+      talla: [null, Validators.required],
+      color: ['', Validators.required],
       cantidad: [0, [Validators.required, Validators.min(0)]],
       precioCompra: [0, [Validators.required, Validators.min(0)]],
       precioVenta: [0, [Validators.required, Validators.min(0)]],
-      proveedor: [null, [Validators.required]],
+      proveedor: [null, Validators.required],
       descripcion: [''],
       imagen: [null],
-      company_code: [this.sessionObj?.user?.company_code || '', [Validators.required]],
+      company_code: [
+        this.sessionObj?.user?.company_code || '',
+        Validators.required
+      ],
     });
   }
 
-  onFileSelected(event: any) {
+  /* ===================== FILE ===================== */
+  onFileSelected(event: any): void {
     const file = event.target.files[0];
-    this.formAgregar.patchValue({ imagen: file });
+    if (file) {
+      this.formAgregar.patchValue({ imagen: file.name });
+    }
   }
 
+  /* ===================== SUBMIT ===================== */
   onSubmit(): void {
     if (this.formAgregar.invalid) {
       Swal.fire({
         icon: 'warning',
         title: 'Formulario inválido',
-        text: 'Por favor, complete todos los campos requeridos.',
+        text: 'Por favor complete todos los campos obligatorios.',
       });
       return;
     }
 
-    if (this.modoFormulario === 'editar') {
-      // Actualizar producto
-      this.productosService.actualizarProducto(this.formAgregar.value).subscribe({
-        next: () => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Actualizado',
-            text: 'Producto actualizado correctamente.',
-          }).then(() => this.router.navigate(['/dashboard/view/tabla-productos']));
-        },
-        error: (err) => {
-          console.error('Error al actualizar:', err);
-          Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar el producto.' });
-        }
-      });
-    } else {
-      // Guardar nuevo producto
-      this.productosService.obtenerProductoPorCodigo(this.formAgregar.value.codigo).subscribe({
-        next: (res) => {
-          if (res && res.producto) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Código duplicado',
-              text: `Ya existe un producto con este código: ${res.producto.nombre}`,
-            });
-          } else {
-            this.productosService.guardarProducto(this.formAgregar.value).subscribe({
-              next: () => {
-                Swal.fire({ icon: 'success', title: '¡Guardado!', text: 'Producto registrado correctamente.' });
-                this.formAgregar.reset();
-                this.router.navigate(['/dashboard/view/tabla-productos']);
-              },
-              error: (err) => {
-                console.error('Error al guardar:', err);
-                Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo registrar el producto.' });
-              }
-            });
-          }
-        },
-        error: (err) => {
-          console.error('Error al verificar código:', err);
-          Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo verificar el código del producto.' });
-        }
-      });
-    }
+    const producto = {
+      ...this.formAgregar.value,
+      id: Date.now(), // ID temporal
+    };
+
+    // 🔹 Obtener productos actuales
+    const productos = JSON.parse(
+      localStorage.getItem('productos') || '[]'
+    );
+
+    // 🔹 Guardar producto
+    productos.push(producto);
+    localStorage.setItem('productos', JSON.stringify(productos));
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Guardado',
+      text: 'Producto registrado correctamente.',
+    }).then(() => {
+      this.formAgregar.reset();
+      this.router.navigate(['/dashboard/view/tabla-productos']);
+    });
   }
 
+  /* ===================== RESET ===================== */
   onReset(): void {
     this.formAgregar.reset();
   }
-
 }
