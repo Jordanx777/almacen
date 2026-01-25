@@ -22,6 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import Swal from 'sweetalert2';
 import { SessionService } from '../../../services/session.service';
+import { MatIconModule } from '@angular/material/icon';
 
 /* ===================== INTERFACES ===================== */
 interface Categoria {
@@ -43,7 +44,7 @@ interface Proveedor {
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-
+    MatIconModule,
     MatFormFieldModule,
     MatSelectModule,
     MatButtonModule,

@@ -237,3 +237,23 @@
 
 
 
+// .acciones-cell {
+//   display: flex;
+//   justify-content: center;
+// }
+
+.btn-pequeno {
+  height: 40px;
+  min-width: 80px;
+  padding: 0 8px;
+  font-size: 0.75rem;
+}
+
+.btn-pequeno mat-icon {
+  font-size: 16px;
+  margin-right: 4px;
+}
+
+.btn-text {
+  vertical-align: middle;
+}

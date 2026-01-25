@@ -17,6 +17,10 @@ export const navItems: NavItem[] = [
     external: true,
   },
 
+  {
+    navCap: 'Stock',
+  },
+
   // {
   //   displayName: 'Estadisticas',
   //   iconName: 'mdi:chart-areaspline',
@@ -52,15 +56,7 @@ export const navItems: NavItem[] = [
     // chipContent: 'PRO',
   },
 
-  {
-    displayName: 'Reportes de Ventas',
-    iconName: 'solar:widget-line-duotone',
-    route: '/dashboard/view/reporte-comisiones',
-    // chip: true,
-    external: true,
-    chipClass: 'bg-secondary text-white',
-    // chipContent: 'PRO',
-  },
+  
   // {
   //   displayName: 'Ecommerce 2',
   //   iconName: 'solar:shopping-cart-line-duotone',
@@ -88,20 +84,32 @@ export const navItems: NavItem[] = [
   //   // chipContent: 'PRO',
   // },
   {
-    navCap: 'Comisiones',
+    navCap: 'Ventas',
 
   },
+
+
   {
-    displayName: 'Agregar comisiones',
+    displayName: 'Reportes de Ventas',
+    iconName: 'solar:widget-line-duotone',
+    route: '/dashboard/view/reporte-ventas',
+    // chip: true,
+    external: true,
+    chipClass: 'bg-secondary text-white',
+    // chipContent: 'PRO',
+  },
+
+  {
+    displayName: 'Agregar Ventas',
     iconName: 'mdi:cash',
-    route: '/dashboard/view/form-comisiones',
+    route: '/dashboard/view/form-ventas',
     // chip: true,
     external: true,
     chipClass: 'bg-secondary text-white',
     // chipContent: 'PRO',
   },
   {
-    displayName: 'Tabla de comisiones',
+    displayName: 'Tabla de Ventas',
     iconName: 'mdi:chart-areaspline',
     // route: 'https://materialm-angular-main.netlify.app/dashboards/dashboard1',
     route: '/dashboard/view/tables',

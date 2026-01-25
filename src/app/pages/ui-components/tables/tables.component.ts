@@ -12,7 +12,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog, MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AppFormComisionesComponent } from '../forms/form-comisiones.component';
+import { AppFormVentasComponent } from '../forms/form-ventas.component';
 import { Router } from '@angular/router';
 import { parse } from 'date-fns';
 import Swal from 'sweetalert2';
@@ -68,7 +68,7 @@ export class AppTablesComponent implements OnInit, AfterViewInit {
   // sessionObj: any;
 
   irAgregarComisiones() {
-    this.router.navigate(['/dashboard/view/form-comisiones']);
+    this.router.navigate(['/dashboard/view/form-ventas']);
   }
 
   constructor(
@@ -157,7 +157,7 @@ export class AppTablesComponent implements OnInit, AfterViewInit {
   iniciarAutoActualizacion() {
     this.intervalId = setInterval(() => {
       this.cargarDatos();
-      console.log('Comisiones actualizadas automáticamente');
+      console.log('Ventas actualizadas automáticamente');
     }, 20000); // cada 20 segundos
   }
 
@@ -181,7 +181,7 @@ export class AppTablesComponent implements OnInit, AfterViewInit {
   }
 
   abrirFormulario(comision: any) {
-    this.router.navigate(['dashboard/view/add-comisiones', comision.cedula]);
+    this.router.navigate(['dashboard/view/add-ventas', comision.cedula]);
   }
 
   pagarCompleto(element: any): void {
@@ -197,7 +197,7 @@ export class AppTablesComponent implements OnInit, AfterViewInit {
     });
   }
   verHistorial(element: any): void {
-    this.router.navigate(['dashboard/view/historial-comisiones', element.cedula]);
+    this.router.navigate(['dashboard/view/historial-ventas', element.cedula]);
   }
   abonar(element: any): void {
     const dialogRef = this.dialog.open(DialogAbonarComponent, {
@@ -230,8 +230,8 @@ export class AppTablesComponent implements OnInit, AfterViewInit {
     worksheet['!cols'] = colWidths;
 
     const workbook: XLSX.WorkBook = {
-      Sheets: { 'Comisiones': worksheet },
-      SheetNames: ['Comisiones'],
+      Sheets: { 'Ventas': worksheet },
+      SheetNames: ['Ventas'],
     };
 
     const excelBuffer: any = XLSX.write(workbook, {
@@ -240,7 +240,7 @@ export class AppTablesComponent implements OnInit, AfterViewInit {
     });
 
     const fecha = new Date().toLocaleDateString('es-CO').replace(/\//g, '-');
-    const nombreArchivo = `Reporte-Comisiones-${fecha}.xlsx`;
+    const nombreArchivo = `Reporte-Ventas-${fecha}.xlsx`;
 
     const data: Blob = new Blob([excelBuffer], {
       type:

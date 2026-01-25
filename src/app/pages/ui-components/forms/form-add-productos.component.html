@@ -1,133 +1,213 @@
-<mat-card class="cardWithShadow theme-card">
-  <mat-card-header>
-    <mat-card-title class="m-b-0">
-      {{ modoFormulario === 'agregar' ? 'Agregar Productos' : 'Editar Producto' }}
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="b-t-1">
-    <form [formGroup]="formAgregar" (ngSubmit)="onSubmit()">
-      <div class="row" style="display: flex; flex-wrap: wrap; gap: 10px;">
+<style>
+  /* --- CONTENEDOR CON EFECTO ELEVADO --- */
+  .cardWithShadow {
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    background: white;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
 
-        <!-- Nombre del producto -->
-        <div style="flex: 0 0 45%; margin-left: 3%;">
-          
-          <mat-form-field appearance="outline" color="primary" style="width: 100%;">
+  /* --- CABECERA ELEGANTE --- */
+  .custom-header {
+    background: #fff;
+    padding: 24px 30px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* --- GRID ESTABLE (CORRECCIÓN DE ALINEACIÓN) --- */
+  .form-container {
+    padding: 30px;
+  }
+
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espaciado uniforme */
+    margin-bottom: 10px;
+  }
+
+  /* Columnas proporcionales */
+  .col-half {
+    flex: 1 1 calc(50% - 20px);
+    min-width: 280px;
+  }
+
+  .col-third {
+    flex: 1 1 calc(33.333% - 20px);
+    min-width: 200px;
+  }
+
+  /* --- SUBTÍTULOS ESTILIZADOS --- */
+  .section-subtitle {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+   /* Color indigo moderno */
+    margin: 25px 0 15px 0;
+    display: flex;
+    align-items: center;
+    letter-spacing: 1.5px;
+  }
+
+  .section-subtitle::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+    margin-left: 15px;
+  }
+
+  /* --- CAMPOS DE PRECIO (DESTACADOS) --- */
+  
+
+  /* --- BOTONES PREMIUM --- */
+  .footer-actions {
+    margin-top: -2%;
+    padding-top: 25px;
+    /* border-top: 1px solid #f1f5f9; */
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+  }
+
+  .btn-save {
+    height: 54px;
+    padding: 0 40px;
+    font-weight: 600;
+    border-radius: 12px;
+  background: linear-gradient(135deg, #0b5ed7 0%, #00a1ff 100%); 
+    color: white;
+  }
+  
+
+  .btn-clear {
+    height: 54px;
+    padding: 0 30px;
+    font-weight: 600;
+    border-radius: 12px;
+  }
+
+  /* Quitar forzado de altura que causaba desalineación */
+  mat-form-field {
+    width: 100%;
+  }
+</style>
+
+<mat-card class="cardWithShadow">
+  
+  <div class="custom-header">
+    <h2 class="header-title">
+      <mat-icon color="primary" style="transform: scale(1.2);">
+        {{ modoFormulario === 'agregar' ? 'add_circle' : 'published_with_changes' }}
+      </mat-icon>
+      {{ modoFormulario === 'agregar' ? 'Nuevo Registro de Producto' : 'Actualizar Producto' }}
+    </h2>
+  </div>
+
+  <mat-card-content class="form-container">
+    <form [formGroup]="formAgregar" (ngSubmit)="onSubmit()">
+      
+      <span class="section-subtitle">Información General</span>
+      <div class="form-row">
+        <div class="col-half">
+          <mat-form-field appearance="outline">
             <mat-label>Nombre del Producto</mat-label>
-            <input formControlName="nombre" matInput placeholder="Nombre" style="height: 32px; font-size: 0.9rem; padding: 4px 6px;" />
-            <mat-error *ngIf="formAgregar.get('nombre')?.hasError('required')" style="font-size: 0.75rem;">
-              Este campo es requerido.
-            </mat-error>
+            <mat-icon matPrefix color="primary">inventory_2</mat-icon>
+            <input formControlName="nombre" matInput placeholder="Ej. Camisa Oxford Slim Fit" />
+            <mat-error *ngIf="formAgregar.get('nombre')?.hasError('required')">Requerido</mat-error>
           </mat-form-field>
         </div>
 
-        <!-- Código/SKU -->
-        <!-- <div style="flex: 0 0 45%; margin-left: 8px;">
-          
-          <mat-form-field appearance="outline" color="primary" style="width: 100%;">
-            <mat-label>Código / SKU</mat-label>
-            <input formControlName="codigo" matInput placeholder="000XX0" style="height: 32px; font-size: 0.9rem; padding: 4px 6px;" />
-            <mat-error *ngIf="formAgregar.get('codigo')?.hasError('required')" style="font-size: 0.75rem;">
-              Este campo es requerido.
-            </mat-error>
-          </mat-form-field>
-        </div> -->
-
-        <!-- Categoría -->
-        <div style="flex: 0 0 45%;  margin-left: 3%;">
-          <mat-form-field appearance="outline" color="primary" style="width: 100%;">
+        <div class="col-half">
+          <mat-form-field appearance="outline">
             <mat-label>Categoría</mat-label>
-            <mat-select formControlName="categoria" placeholder="Selecciona" [disableOptionCentering]="true">
+            <mat-icon matPrefix color="primary">label</mat-icon>
+            <mat-select formControlName="categoria">
               <mat-option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</mat-option>
             </mat-select>
-            <mat-error *ngIf="formAgregar.get('categoria')?.hasError('required')" style="font-size: 0.75rem;">
-              Este campo es requerido.
-            </mat-error>
+            <mat-error *ngIf="formAgregar.get('categoria')?.hasError('required')">Seleccione una opción</mat-error>
           </mat-form-field>
         </div>
-
-        <!-- Talla -->
-        <div style="flex: 0 0 45%;  margin-left: 3%;">
-          <mat-form-field appearance="outline" color="primary" style="width: 100%;">
-            <mat-label>Talla</mat-label>
-            <mat-select formControlName="talla" placeholder="Selecciona" [disableOptionCentering]="true">
-              <mat-option *ngFor="let t of tallas" [value]="t">{{ t }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="formAgregar.get('talla')?.hasError('required')" style="font-size: 0.75rem;">
-              Este campo es requerido.
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <!-- Color -->
-        <div style="flex: 0 0 45%;  margin-left: 3%;">
-          <mat-form-field appearance="outline" color="primary" style="width: 100%;">
-            <mat-label>Color</mat-label>
-            <input formControlName="color" matInput placeholder="Ej: Rojo" style="height: 32px; font-size: 0.9rem; padding: 4px 6px;" />
-            <mat-error *ngIf="formAgregar.get('color')?.hasError('required')" style="font-size: 0.75rem;">
-              Este campo es requerido.
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <!-- Cantidad -->
-        <div style="flex: 0 0 45%;  margin-left: 3%;">
-          <mat-form-field appearance="outline" color="primary" style="width: 100%;">
-            <mat-label>Cantidad</mat-label>
-            <input formControlName="cantidad" matInput type="number" placeholder="0" style="height: 32px; font-size: 0.9rem; padding: 4px 6px;" />
-            <mat-error *ngIf="formAgregar.get('cantidad')?.hasError('required')" style="font-size: 0.75rem;">
-              Este campo es requerido.
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <!-- Precio Compra -->
-        <div style="flex: 0 0 45%;  margin-left: 3%;">
-          <mat-form-field appearance="outline" color="primary" style="width: 100%;">
-            <mat-label>Precio Compra</mat-label>
-            <input formControlName="precioCompra" matInput type="number" placeholder="0.00" style="height: 32px; font-size: 0.9rem; padding: 4px 6px;" />
-            <mat-error *ngIf="formAgregar.get('precioCompra')?.hasError('required')" style="font-size: 0.75rem;">
-              Este campo es requerido.
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <!-- Precio Venta -->
-        <div style="flex: 0 0 45%;  margin-left: 3%;">
-          <mat-form-field appearance="outline" color="primary" style="width: 100%;">
-            <mat-label>Precio Venta</mat-label>
-            <input formControlName="precioVenta" matInput type="number" placeholder="0.00" style="height: 32px; font-size: 0.9rem; padding: 4px 6px;" />
-            <mat-error *ngIf="formAgregar.get('precioVenta')?.hasError('required')" style="font-size: 0.75rem;">
-              Este campo es requerido.
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <!-- Proveedor -->
-        <div style="flex: 0 0 45%;  margin-left: 3%;">
-          <mat-form-field appearance="outline" color="primary" style="width: 100%;">
-            <mat-label>Proveedor</mat-label>
-            <mat-select formControlName="proveedor" placeholder="Selecciona" [disableOptionCentering]="true">
-              <mat-option *ngFor="let p of proveedores" [value]="p.id">{{ p.nombre }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="formAgregar.get('proveedor')?.hasError('required')" style="font-size: 0.75rem;">
-              Este campo es requerido.
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <!-- Descripción (ocupa toda la fila) -->
-        <!-- <div style="flex: 0 0 92%; margin-bottom: 12px; margin-left: 3%;">
-          <mat-form-field appearance="outline" color="primary" style="width: 100%;">
-            <mat-label>Descripción</mat-label>
-            <textarea matInput formControlName="descripcion" placeholder="Detalles adicionales" style="font-size: 0.85rem; padding: 4px;"></textarea>
-          </mat-form-field>
-        </div> -->
-
       </div>
 
-      <!-- Botones -->
-      <div class="mt-3"  style="flex: 0 0 92%; margin-top: 1%; margin-left: 3%;">
-        <button mat-flat-button color="primary" type="submit">Guardar</button>
+      <span class="section-subtitle">Especificaciones Técnicas</span>
+      <div class="form-row">
+        <div class="col-third">
+          <mat-form-field appearance="outline">
+            <mat-label>Talla</mat-label>
+            <mat-icon matPrefix color="primary">straighten</mat-icon>
+            <mat-select formControlName="talla">
+              <mat-option *ngFor="let t of tallas" [value]="t">{{ t }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-third">
+          <mat-form-field appearance="outline">
+            <mat-label>Color</mat-label>
+            <mat-icon matPrefix color="primary">palette</mat-icon>
+            <input formControlName="color" matInput placeholder="Ej. Azul Marino" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-third">
+          <mat-form-field appearance="outline">
+            <mat-label>Stock en Almacén</mat-label>
+            <mat-icon matPrefix color="primary">dataset</mat-icon>
+            <input formControlName="cantidad" matInput type="number" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <span class="section-subtitle">Finanzas y Abastecimiento</span>
+      <div class="form-row">
+        <div class="col-third">
+          <mat-form-field appearance="outline" class="price-field">
+            <mat-label>Costo Unitario</mat-label>
+            <span matPrefix style="font-weight: bold; ">$&nbsp;</span>
+            <input formControlName="precioCompra" matInput type="number" placeholder="0.00" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-third">
+          <mat-form-field appearance="outline" class="price-field">
+            <mat-label>Precio al Público</mat-label>
+            <span matPrefix style="font-weight: bold; ">$&nbsp;</span>
+            <input formControlName="precioVenta" matInput type="number" placeholder="0.00" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-third">
+          <mat-form-field appearance="outline">
+            <mat-label>Proveedor Principal</mat-label>
+            <mat-icon matPrefix color="primary">business</mat-icon>
+            <mat-select formControlName="proveedor">
+              <mat-option *ngFor="let p of proveedores" [value]="p.id">{{ p.nombre }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="footer-actions">
+        <button mat-flat-button class="btn-save" type="submit" [disabled]="formAgregar.invalid">
+          <mat-icon>check_circle</mat-icon>
+          &nbsp; {{ modoFormulario === 'agregar' ? 'CONFIRMAR REGISTRO' : 'GUARDAR CAMBIOS' }}
+        </button>
+
+        <button mat-stroked-button color="warn" class="btn-clear" type="button" (click)="formAgregar.reset()">
+          CANCELAR
+        </button>
       </div>
 
     </form>

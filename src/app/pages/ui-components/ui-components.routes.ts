@@ -9,7 +9,7 @@ import { AppTooltipsComponent } from './tooltips/tooltips.component';
 import { AppFormsProductoComponent } from './forms/forms.component';
 import { AppTablesComponent } from './tables/tables.component';
 import { FormAddReservaComponent } from './forms/form-add-reserva.component';
-import { AppFormComisionesComponent } from './forms/form-comisiones.component';
+import { AppFormVentasComponent } from './forms/form-ventas.component';
 import { AppBlogCardsComponent } from 'src/app/components/blog-card/blog-card.component';
 import { LandingPageComponent } from '../landing-page/landing-page.component';
 import { AppTotalIncomeComponent } from 'src/app/components/total-income/total-income.component';
@@ -22,7 +22,7 @@ import { MyProfileComponent } from './profile/my-profile.component';
 import { AuthGuard } from '../authentication/auth.guard';
 import { H } from '@angular/cdk/keycodes';
 import { HistorialComisionesComponent } from './tables/historial-comisiones/historial-comisiones.component';
-import { ReportePagosComponent } from './tables/historial-comisiones/reporte-pago/reporte-pago.component';
+import { ReporteVentasComponent } from './tables/historial-comisiones/reporte-ventas/reporte-ventas.component';
 
 export const landingRoutes: Routes = [
   {
@@ -114,12 +114,12 @@ export const UiComponentsRoutes: Routes = [
       },
       {
         path: 'add-comisiones/:cedula',
-        component: AppFormComisionesComponent,
+        component: AppFormVentasComponent,
         canActivate: [AuthGuard]
       },
       {
-        path: 'form-comisiones',
-        component: AppFormComisionesComponent,
+        path: 'form-ventas',
+        component: AppFormVentasComponent,
         canActivate: [AuthGuard]
       },
       {
@@ -129,7 +129,7 @@ export const UiComponentsRoutes: Routes = [
       },
       {
         path: 'editar-comisiones/:cedula',
-        component: AppFormComisionesComponent,
+        component: AppFormVentasComponent,
         canActivate: [AuthGuard]
       },
       {
@@ -148,8 +148,8 @@ export const UiComponentsRoutes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'reporte-comisiones',
-        component: ReportePagosComponent,
+        path: 'reporte-ventas',
+        component: ReporteVentasComponent,
         canActivate: [AuthGuard]
       },
     ],

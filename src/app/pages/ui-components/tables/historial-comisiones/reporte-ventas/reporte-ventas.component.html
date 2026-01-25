@@ -1,0 +1,186 @@
+<mat-card class="card-reporte">
+  <mat-card-title>🛍️ Reporte de Ventas</mat-card-title>
+
+  <mat-card-content>
+
+    <!-- ================= FILTROS ================= -->
+    <div class="container-fluid filtros-pc">
+      <div class="row g-3 align-items-end">
+
+        <div class="col-md-5 col-sm-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Cliente</mat-label>
+            <input matInput [(ngModel)]="clienteFiltro" placeholder="Nombre del cliente">
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-7 col-sm-12 d-flex justify-content-end gap-2">
+          <button mat-raised-button color="primary" (click)="cargarReporte()">
+            <mat-icon>search</mat-icon>
+            Buscar
+          </button>
+
+          <button mat-stroked-button color="accent" (click)="exportarExcel()">
+            <mat-icon>download</mat-icon>
+            Exportar
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= TABLA ================= -->
+    <div class="table-container mt-4">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+
+        <!-- Cliente -->
+        <ng-container matColumnDef="cliente">
+          <th mat-header-cell *matHeaderCellDef>Cliente</th>
+          <td mat-cell *matCellDef="let row" class="cursor-pointer" (click)="abrirDetalleVenta(row)">
+            {{ row.cliente }}
+          </td>
+        </ng-container>
+
+        <!-- Fecha -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.fecha | date:'dd/MM/yyyy' }}
+          </td>
+        </ng-container>
+
+        <!-- Productos -->
+        <ng-container matColumnDef="productos">
+          <th mat-header-cell *matHeaderCellDef>Productos</th>
+          <td mat-cell *matCellDef="let row">
+            <span *ngFor="let p of row.productos; let i = index">
+              {{ p.nombre }}
+              <span *ngIf="i < row.productos.length - 1">, </span>
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Cantidad -->
+        <ng-container matColumnDef="cantidad">
+          <th mat-header-cell *matHeaderCellDef>Cant.</th>
+          <td mat-cell *matCellDef="let row">
+            {{ getTotalCantidad(row) }}
+          </td>
+        </ng-container>
+
+        <!-- Total -->
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>Total</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.total | currency:'COP':'symbol':'1.0-0' }}
+          </td>
+        </ng-container>
+
+        <!-- Acciones -->
+<ng-container matColumnDef="acciones">
+  <th mat-header-cell *matHeaderCellDef>Acciones</th>
+  <td mat-cell *matCellDef="let row" class="acciones-cell">
+    <button mat-stroked-button color="warn" class="btn-pequeno" (click)="registrarDevolucion(row)">
+      <mat-icon>undo</mat-icon>
+      <span class="btn-text">Devolver</span>
+    </button>
+  </td>
+</ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+      </table>
+
+      <mat-paginator [pageSize]="5" [pageSizeOptions]="[5,10,20,50]" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!-- ================= DETALLE VENTA ================= -->
+    <ng-template #detalleVentaDialog>
+      <h2 mat-dialog-title>Detalle de la venta</h2>
+
+      <mat-dialog-content>
+        <p><strong>Cliente:</strong> {{ ventaSeleccionada?.cliente }}</p>
+        <p><strong>Fecha:</strong> {{ ventaSeleccionada?.fecha | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Total:</strong> {{ ventaSeleccionada?.total | currency:'COP' }}</p>
+
+        <p class="mt-2"><strong>Productos:</strong></p>
+        <ul>
+          <li *ngFor="let prod of ventaSeleccionada?.productos">
+            {{ prod.nombre }} x{{ prod.cantidad }} – {{ prod.precio | currency:'COP' }}
+          </li>
+        </ul>
+      </mat-dialog-content>
+
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cerrar</button>
+      </mat-dialog-actions>
+    </ng-template>
+
+    <!-- ================= DEVOLUCIÓN ================= -->
+    <ng-template #devolucionDialog>
+      <div style="
+        background-color: #fafafa;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        font-family: Roboto, Arial, sans-serif;
+        max-width: 500px;
+        width: 100%;
+      ">
+        <h2 style="color: #d32f2f; display: flex; align-items: center; gap: 8px; font-size: 1rem;">
+          <mat-icon color="warn">undo</mat-icon>
+          Registrar Devolución
+        </h2>
+
+        <mat-dialog-content style="display: flex; flex-direction: column; gap: 15px;">
+
+          <!-- Info del cliente -->
+          <p><strong>Venta de:</strong> {{ ventaSeleccionada?.cliente }}</p>
+          <p><strong>Fecha:</strong> {{ ventaSeleccionada?.fecha | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Total:</strong> {{ ventaSeleccionada?.total | currency:'COP' }}</p>
+
+          <!-- Productos de la venta -->
+          <div>
+            <p><strong>Productos de la venta:</strong></p>
+            <ul>
+              <li *ngFor="let prod of ventaSeleccionada?.productos">
+                {{ prod.nombre }} - Cantidad: {{ prod.cantidad }} - Precio: {{ prod.precio | currency:'COP' }}
+              </li>
+            </ul>
+          </div>
+
+          <!-- Inputs del formulario de devolución -->
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Nombre de quien devuelve</mat-label>
+            <input matInput [(ngModel)]="devolucion.nombre">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Documento</mat-label>
+            <input matInput [(ngModel)]="devolucion.documento">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Motivo de la devolución</mat-label>
+            <textarea matInput rows="3" [(ngModel)]="devolucion.motivo"></textarea>
+          </mat-form-field>
+
+        </mat-dialog-content>
+
+        <mat-dialog-actions align="end" style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button mat-button mat-dialog-close>Cancelar</button>
+          <button mat-raised-button color="warn" (click)="confirmarDevolucion()">
+            <mat-icon>check_circle</mat-icon>
+            Confirmar devolución
+          </button>
+        </mat-dialog-actions>
+      </div>
+    </ng-template>
+
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,304 @@
+<style>
+  /* --- ESTILOS MODERNOS (CSS) --- */
+
+  /* Tarjeta principal */
+  .cardWithShadow {
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08); /* Sombra suave */
+    background: white;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  /* Encabezado (Header) */
+  .custom-header {
+    background: #fff;
+    padding: 20px 24px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between; /* Título a la izq, buscador a la der */
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .header-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    /* Color primario */
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Sistema de Rejilla Flexible (Flexbox) */
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* Espacio entre columnas */
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  /* Columnas Inteligentes (Porcentajes) */
+  .col-100 { flex: 1 1 100%; } /* Ocupa todo el ancho */
+  
+  .col-33 { 
+    flex: 1 1 calc(33.33% - 16px); /* Ocupa un tercio (ideal para PC) */
+    min-width: 250px; /* En celular se estira */
+  }
+
+  .col-auto {
+    flex: 1 1 auto; /* Se adapta al contenido */
+  }
+
+  .col-small {
+    flex: 1 1 calc(15% - 16px); /* Columnas pequeñas (Talla/Cant) */
+    min-width: 80px;
+  }
+
+  /* Caja diferenciada para "Agregar Item" */
+  .add-item-box {
+    background-color: #f8fafc; /* Fondo gris muy suave */
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 25px 0;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 15px;
+    display: block;
+  }
+
+  /* Tabla */
+  .table-wrapper {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin-bottom: 20px;
+  }
+  
+  .full-width { width: 100%; }
+
+  /* Footer de Totales */
+  .footer-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid #f1f5f9;
+    padding-top: 20px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .total-display {
+    text-align: right;
+  }
+
+  .total-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+
+  .total-amount {
+    font-size: 2rem; /* Precio Grande */
+    font-weight: 800;
+    color: #10b981; /* Verde Dinero */
+    line-height: 1;
+  }
+
+  /* Botones alineados */
+  .btn-action {
+    height: 54px; /* Misma altura que los inputs */
+    padding: 0 24px;
+    font-weight: 500;
+  }
+
+</style>
+
+
+<mat-card class="cardWithShadow">
+  
+  <div class="custom-header">
+    <h2 class="header-title">
+      <mat-icon>storefront</mat-icon>
+      Registro de Venta
+    </h2>
+
+    <form [formGroup]="formBuscar" style="margin-bottom: -1.25em;">
+      <mat-form-field appearance="outline" style="width: 260px; font-size: 0.9rem;">
+        <mat-label>Buscar Cédula Cliente</mat-label>
+        <input formControlName="cedula" matInput #cedulaInput type="number" />
+        <button mat-icon-button matSuffix color="primary" (click)="consultarPorCedula(cedulaInput.value); $event.preventDefault()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <mat-card-content style="padding: 24px;">
+    <form [formGroup]="formAgregar">
+
+      <span class="section-subtitle">Datos del Cliente</span>
+      
+      <div class="form-row">
+        <div class="col-33">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre Completo</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input formControlName="nombre" matInput />
+            <mat-error>Requerido</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-33">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Cédula / NIT</mat-label>
+            <mat-icon matPrefix>badge</mat-icon>
+            <input formControlName="cedula" matInput type="number" />
+            <mat-error>Requerido</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-33">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Teléfono</mat-label>
+            <mat-icon matPrefix>phone</mat-icon>
+            <input formControlName="telefono" matInput type="tel" />
+            <mat-error>Requerido</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="add-item-box">
+        <span class="section-subtitle" >
+          <mat-icon style="font-size: 16px; height: 16px; vertical-align: middle;">add_circle</mat-icon> 
+          Agregar Producto
+        </span>
+
+        <div class="form-row">
+          <div class="col-auto" style="flex-grow: 2; min-width: 200px;">
+            <mat-form-field appearance="outline" class="full-width" color="accent">
+              <mat-label>Nombre de la prenda</mat-label>
+              <input #articulo matInput placeholder="Ej. Jeans Slim Fit" />
+            </mat-form-field>
+          </div>
+
+          <div class="col-small">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Talla</mat-label>
+              <input #talla matInput placeholder="M" />
+            </mat-form-field>
+          </div>
+
+          <div class="col-small" style="min-width: 100px;">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Color</mat-label>
+              <input #color matInput placeholder="Azul" />
+            </mat-form-field>
+          </div>
+
+          <div class="col-small">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Cant.</mat-label>
+              <input #cantidad matInput type="number" placeholder="1" />
+            </mat-form-field>
+          </div>
+
+          <div class="col-small" style="min-width: 120px;">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Precio Unit.</mat-label>
+              <span matPrefix>$&nbsp;</span>
+              <input #precio matInput type="number" />
+            </mat-form-field>
+          </div>
+
+          <div style="margin-top: 4px;"> 
+            <button mat-flat-button style="  background: linear-gradient(135deg, #0b5ed7 0%, #00a1ff 100%); 
+    color: white;" class="btn-action"
+                    (click)="agregarArticulo(articulo.value, talla.value, color.value, +cantidad.value, +precio.value);
+                             articulo.value=''; talla.value=''; color.value=''; cantidad.value=''; precio.value='';
+                             $event.preventDefault();">
+              AGREGAR
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="articulosVenta" class="full-width">
+          
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef style="background:#f1f5f9;"> Artículo </th>
+            <td mat-cell *matCellDef="let element" style="font-weight: 500;"> {{ element.nombre }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="talla">
+            <th mat-header-cell *matHeaderCellDef style="background:#f1f5f9;"> Talla </th>
+            <td mat-cell *matCellDef="let element"> {{ element.talla }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="color">
+            <th mat-header-cell *matHeaderCellDef style="background:#f1f5f9;"> Color </th>
+            <td mat-cell *matCellDef="let element"> {{ element.color }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef style="background:#f1f5f9;"> Cant. </th>
+            <td mat-cell *matCellDef="let element"> {{ element.cantidad }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef style="background:#f1f5f9;"> Subtotal </th>
+            <td mat-cell *matCellDef="let element"> {{ element.precio * element.cantidad | currency:'COP':'symbol':'1.0-0' }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef style="background:#f1f5f9; text-align: center;"> </th>
+            <td mat-cell *matCellDef="let element; let i = index" style="text-align: center;">
+              <button mat-icon-button color="warn" (click)="eliminarArticulo(i)">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['nombre', 'talla', 'color', 'cantidad', 'precio', 'acciones']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['nombre', 'talla', 'color', 'cantidad', 'precio', 'acciones'];"></tr>
+          
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="6" style="text-align: center; padding: 20px; color: #94a3b8;">
+              No hay prendas en la lista
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="footer-section">
+        
+        <div style="display: flex; gap: 15px;">
+          <button mat-stroked-button color="warn" class="btn-action" [routerLink]="['/dashboard']">
+            Cancelar
+          </button>
+          <button mat-raised-button color="primary" class="btn-action" (click)="guardarVenta()">
+            <mat-icon>save_alt</mat-icon> &nbsp; CONFIRMAR VENTA
+          </button>
+        </div>
+
+        <div class="total-display">
+          <span class="total-label">Total a Pagar:</span>
+          <span class="total-amount">{{ getTotalFormateado() }}</span>
+        </div>
+
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>
