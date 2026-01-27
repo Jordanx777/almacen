@@ -72,9 +72,6 @@ export class AppChipsComponent {
     });
   }
 
-  //
-  // Stacked
-  //
   availableColors: ChipColor[] = [
     { name: 'Primary', color: 'primary' },
     { name: 'Accent', color: 'accent' },

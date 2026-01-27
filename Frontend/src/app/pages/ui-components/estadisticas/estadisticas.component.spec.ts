@@ -10,6 +10,7 @@ describe('EstadisticasComponent', () => {
     await TestBed.configureTestingModule({
       imports: [EstadisticasComponent]
     })
+    // 
     .compileComponents();
 
     fixture = TestBed.createComponent(EstadisticasComponent);

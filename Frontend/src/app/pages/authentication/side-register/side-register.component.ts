@@ -83,7 +83,7 @@ export class AppSideRegisterComponent {
       companyName: companyName,
       companyCode: companyCode,  // este código que generaste
     };
-
+// 
     // URL de tu API PHP para registro
     // const url = 'http://localhost/php/auth/registro.php';
     const url = 'https://neocompanyapp.com/php/auth/registro.php'; // Cambia esto por la URL de tu API

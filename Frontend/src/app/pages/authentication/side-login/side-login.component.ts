@@ -77,6 +77,7 @@ export class AppSideLoginComponent implements OnDestroy {
                 toast.onmouseleave = Swal.resumeTimer;
               }
             });
+            // 
             Toast.fire({
               icon: "success",
               title: "Login exitoso",

@@ -7,3 +7,4 @@ import { MaterialModule } from '../../../material.module';
   templateUrl: './icons.component.html',
 })
 export class AppIconsComponent { }
+// 
