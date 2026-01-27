@@ -111,7 +111,7 @@
       <mat-icon color="primary" style="transform: scale(1.2);">
         {{ modoFormulario === 'agregar' ? 'add_circle' : 'published_with_changes' }}
       </mat-icon>
-      {{ modoFormulario === 'agregar' ? 'Nuevo Registro de Producto' : 'Actualizar Producto' }}
+      {{ modoFormulario === 'agregar' ? 'Agregar Producto' : 'Actualizar Producto' }}
     </h2>
   </div>
 
@@ -120,7 +120,7 @@
       
       <span class="section-subtitle">Información General</span>
       <div class="form-row">
-        <div class="col-half">
+        <div class="col-33">
           <mat-form-field appearance="outline">
             <mat-label>Nombre del Producto</mat-label>
             <mat-icon matPrefix color="primary">inventory_2</mat-icon>
@@ -129,7 +129,7 @@
           </mat-form-field>
         </div>
 
-        <div class="col-half">
+        <div class="col-33">
           <mat-form-field appearance="outline">
             <mat-label>Categoría</mat-label>
             <mat-icon matPrefix color="primary">label</mat-icon>

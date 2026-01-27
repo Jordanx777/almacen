@@ -8,14 +8,14 @@ import { AppMenuComponent } from './menu/menu.component';
 import { AppTooltipsComponent } from './tooltips/tooltips.component';
 import { AppFormsProductoComponent } from './forms/forms.component';
 import { AppTablesComponent } from './tables/tables.component';
-import { FormAddReservaComponent } from './forms/form-add-reserva.component';
+import { FormPedidosComponent } from './forms/form-pedidos.component';
 import { AppFormVentasComponent } from './forms/form-ventas.component';
 import { AppBlogCardsComponent } from 'src/app/components/blog-card/blog-card.component';
 import { LandingPageComponent } from '../landing-page/landing-page.component';
 import { AppTotalIncomeComponent } from 'src/app/components/total-income/total-income.component';
 import { AppEarningReportsComponent } from 'src/app/components/earning-reports/earning-reports.component';
 import { TablaProductosComponent } from './tables/tabla-productos.component';
-import { TablaReservasComponent } from './tables/tabla-reservas.component';
+import { TablaPedidosComponent } from './tables/tabla-pedidos.component';
 import { EstadisticasComponent } from './estadisticas/estadisticas.component';
 import { TablaAdministracionComponent } from './tables/tabla-administracion.component';
 import { MyProfileComponent } from './profile/my-profile.component';
@@ -72,8 +72,8 @@ export const UiComponentsRoutes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'tabla-reservas',
-        component: TablaReservasComponent,
+        path: 'tabla-pedidos',
+        component: TablaPedidosComponent,
         canActivate: [AuthGuard]
       },
       {
@@ -103,13 +103,13 @@ export const UiComponentsRoutes: Routes = [
       },
 
       {
-        path: 'form-reserva',
-        component: FormAddReservaComponent,
+        path: 'form-pedidos',
+        component: FormPedidosComponent,
         canActivate: [AuthGuard]
       },
       {
-        path: 'editar-reserva/:cedula',
-        component: FormAddReservaComponent,
+        path: 'editar-pedidos/:cedula',
+        component: FormPedidosComponent,
         canActivate: [AuthGuard]
       },
       {

@@ -1,0 +1,109 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">
+      {{ modoFormulario === 'agregar' ? 'Registrar Pedido' : 'Editar Pedido' }}
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="b-t-1">
+    <form [formGroup]="formAgregar" (ngSubmit)="onSubmit()">
+      <div class="row">
+
+        <!-- Proveedor / Distribuidor -->
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Distribuidor / Proveedor</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput formControlName="proveedor" placeholder="Ej: Textiles Medellín" />
+            <mat-error *ngIf="formAgregar.get('proveedor')?.invalid && formAgregar.get('proveedor')?.touched">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Número de pedido -->
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Número de Pedido</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput formControlName="numero_pedido" placeholder="PED-00123" />
+            <mat-error *ngIf="formAgregar.get('numero_pedido')?.invalid && formAgregar.get('numero_pedido')?.touched">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Fecha del pedido -->
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Fecha del Pedido</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput [matDatepicker]="picker" formControlName="fecha_pedido"
+                   (focus)="picker.open()" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="formAgregar.get('fecha_pedido')?.invalid && formAgregar.get('fecha_pedido')?.touched">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Cantidad de prendas -->
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Cantidad de Prendas</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput type="number" formControlName="cantidad_prendas" placeholder="Ej: 120" />
+            <mat-error *ngIf="formAgregar.get('cantidad_prendas')?.invalid && formAgregar.get('cantidad_prendas')?.touched">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Valor total -->
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Valor Total del Pedido</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput type="number" formControlName="valor_total" placeholder="Ej: 1500000" />
+            <mat-error *ngIf="formAgregar.get('valor_total')?.invalid && formAgregar.get('valor_total')?.touched">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Estado del pedido -->
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Estado del Pedido</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-select formControlName="estado_pedido">
+              <mat-option value="pendiente">Pendiente</mat-option>
+              <mat-option value="pagado">Pagado</mat-option>
+              <mat-option value="recibido">Recibido</mat-option>
+              <mat-option value="cancelado">Cancelado</mat-option>
+            </mat-select>
+            <mat-error *ngIf="formAgregar.get('estado_pedido')?.invalid && formAgregar.get('estado_pedido')?.touched">
+              Este campo es obligatorio
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Observaciones -->
+        <div class="col-lg-12">
+          <mat-label class="f-w-600 m-b-8 d-block">Observaciones</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <textarea matInput rows="3" formControlName="observaciones"
+              placeholder="Ej: Pedido para temporada diciembre (opcional)"></textarea>
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <!-- Botones -->
+      <div class="m-t-12">
+        <button mat-flat-button color="primary" type="submit" class="m-r-8">
+          Guardar Pedido
+        </button>
+        <button mat-stroked-button color="warn" [routerLink]="['/dashboard']">
+          Cancelar
+        </button>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>

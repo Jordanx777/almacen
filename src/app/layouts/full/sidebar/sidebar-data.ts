@@ -34,20 +34,11 @@ export const navItems: NavItem[] = [
 
  /*agregar productos*/
 
-  {
-    displayName: 'Agregar Productos',
-    iconName: 'mdi:plus-circle',
-    route: '/dashboard/view/form-producto',
-    // chip: true,
-    external: true,
-    chipClass: 'bg-secondary text-white',
-    // chipContent: 'PRO',
-  },
-
-  /*lista de productos*/
-
-    {
-    displayName: 'Tabla de Productos',
+ 
+ /*lista de productos*/
+ 
+ {
+   displayName: 'Productos',
     iconName: 'mdi:taxi',
     route: '/dashboard/view/tabla-productos',
     // chip: true,
@@ -55,7 +46,16 @@ export const navItems: NavItem[] = [
     chipClass: 'bg-secondary text-white',
     // chipContent: 'PRO',
   },
-
+  
+  {
+    displayName: 'Registrar Productos',
+    iconName: 'mdi:plus-circle',
+    route: '/dashboard/view/form-producto',
+    // chip: true,
+    external: true,
+    chipClass: 'bg-secondary text-white',
+    // chipContent: 'PRO',
+  },
   
   // {
   //   displayName: 'Ecommerce 2',
@@ -90,7 +90,7 @@ export const navItems: NavItem[] = [
 
 
   {
-    displayName: 'Reportes de Ventas',
+    displayName: 'Reportes',
     iconName: 'solar:widget-line-duotone',
     route: '/dashboard/view/reporte-ventas',
     // chip: true,
@@ -100,7 +100,7 @@ export const navItems: NavItem[] = [
   },
 
   {
-    displayName: 'Agregar Ventas',
+    displayName: 'Registrar Venta',
     iconName: 'mdi:cash',
     route: '/dashboard/view/form-ventas',
     // chip: true,
@@ -121,22 +121,22 @@ export const navItems: NavItem[] = [
     // showView: 'analytics',
   },
   {
-    navCap: 'Reservas',
+    navCap: 'Graficas',
     divider: true,
   },
   {
-    displayName: 'Agregar Reserva',
+    displayName: 'Agregar Pedidos',
     iconName: 'mdi:plus-circle',
-    route: '/dashboard/view/form-reserva',
+    route: '/dashboard/view/form-pedidos',
     // chip: true,
     chipClass: 'bg-secondary text-white',
     // chipContent: 'PRO',
     external: true,
   },
   {
-    displayName: 'Tabla de Reservas',
+    displayName: 'Tabla Pedidos',
     iconName: 'mdi:table',
-    route: '/dashboard/view/tabla-reservas',
+    route: '/dashboard/view/tabla-pedidos',
     // chip: true,
     chipClass: 'bg-secondary text-white',
     // chipContent: 'PRO',
