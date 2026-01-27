@@ -30,36 +30,53 @@ export class AppEarningReportsComponent {
     currentPage = 1;           // página actual
 
     constructor(private http: HttpClient) {
-        this.cargarReportes();
+        // this.cargarReportes();
+        
     }
     sessionObj: any;
     companyNameDeseado: any;
     ngOnInit(): void {
-        this.cargarReportes();
+        // ✅ Primero obtener la sesión
         const session = localStorage.getItem('session');
         if (session) {
             this.sessionObj = JSON.parse(session);
-            console.log('Usuario en sesión desde comisiones:', this.sessionObj.user.username);
-            console.log('ID de usuario desde comisiones:', this.sessionObj.user.company_code);
+            this.companyNameDeseado = this.sessionObj.user.company_code;
+            console.log('Usuario en sesión:', this.sessionObj.user.username);
+            console.log('Company code:', this.companyNameDeseado);
+            
+            // ✅ Ahora sí cargar los reportes
+            this.cargarReportes();
         } else {
             console.log('No hay usuario en sesión');
         }
-        this.companyNameDeseado = this.sessionObj.user.company_code;
     }
 
+
     cargarReportes() {
-        this.http.get<stats[]>(this.apiUrl).subscribe((response) => {
-            if (Array.isArray(response)) {
-                this.stats = response.filter(item => item.company_code === this.companyNameDeseado);
-                // this.dataSource.data = filtrados;
-                console.log('Datos cargados:', this.stats);
-            } else {
+        // ✅ Verificar que tengamos el company_code antes de filtrar
+        if (!this.companyNameDeseado) {
+            console.error('No hay company_code para filtrar');
+            return;
+        }
+
+        this.http.get<stats[]>(this.apiUrl).subscribe({
+            next: (response) => {
+                if (Array.isArray(response)) {
+                    this.stats = response.filter(item => 
+                        item.company_code === this.companyNameDeseado
+                    );
+                    console.log('Datos filtrados:', this.stats);
+                } else {
+                    this.stats = [];
+                    console.error('Respuesta no es un array:', response);
+                }
+            },
+            error: (error) => {
+                console.error('Error al cargar reportes:', error);
                 this.stats = [];
-                console.error('Error al cargar los datos:', response);
             }
         });
     }
-
     // Total de páginas según datos y pageSize
     get totalPages(): number {
         return Math.ceil(this.stats.length / this.pageSize);

@@ -4,7 +4,7 @@ import { MaterialModule } from '../../material.module';
 import { AppTotalFollowersComponent } from '../../components/total-followers/total-followers.component';
 import { AppTotalIncomeComponent } from '../../components/total-income/total-income.component';
 import { AppEarningReportsComponent } from '../../components/earning-reports/earning-reports.component';
-import { AppTablesComponent } from '../ui-components/tables/tables.component';
+// import { AppTablesComponent } from '../ui-components/tables/tables.component';
 
 @Component({
   selector: 'app-starter',
@@ -13,8 +13,7 @@ import { AppTablesComponent } from '../ui-components/tables/tables.component';
     MaterialModule,
     AppTotalFollowersComponent,
     AppTotalIncomeComponent,
-    AppEarningReportsComponent,
-    AppTablesComponent
+    AppEarningReportsComponent
   ],
   templateUrl: './starter.component.html',
   encapsulation: ViewEncapsulation.None,

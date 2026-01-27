@@ -121,14 +121,19 @@ export class AppTablesComponent implements OnInit, AfterViewInit {
   sessionObj: any;
   ngOnInit(): void {
     this.formBuscar = this.crearFormularioConsultar();
-    this.cargarDatos();
+    
+    // ✅ Primero obtener la sesión
     const session = localStorage.getItem('session');
     if (session) {
-      this.sessionObj = JSON.parse(session);
-      console.log('Usuario en sesión desde comisiones:', this.sessionObj.user.username);
-      console.log('ID de usuario desde comisiones:', this.sessionObj.user.company_code);
+        this.sessionObj = JSON.parse(session);
+        console.log('Usuario en sesión desde comisiones:', this.sessionObj.user.username);
+        console.log('ID de usuario desde comisiones:', this.sessionObj.user.company_code);
+        
+        // ✅ Ahora sí cargar los datos
+        this.cargarDatos();
     } else {
-      console.log('No hay usuario en sesión');
+        console.log('No hay usuario en sesión');
+        return; // ✅ Salir si no hay sesión
     }
 
     this.dataSource1.filterPredicate = (data: any, filter: string) => {
@@ -159,6 +164,14 @@ export class AppTablesComponent implements OnInit, AfterViewInit {
       this.cargarDatos();
       console.log('Comisiones actualizadas automáticamente');
     }, 20000); // cada 20 segundos
+  }
+
+  // ✅ NUEVO: Limpiar el intervalo cuando el componente se destruya
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      console.log('Intervalo de actualización detenido');
+    }
   }
 
   ngAfterViewInit() {
