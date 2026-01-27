@@ -49,6 +49,7 @@ export class ProfileTaxistasComponent {
     console.log('Abrir configuración para:', this.data);
     // Aquí va la lógica para abrir configuraciones
     // this.router.navigate(['dashboard']);
+    // 
 
   }
   abrirFormulario(comision: any) {

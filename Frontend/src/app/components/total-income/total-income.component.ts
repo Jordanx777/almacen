@@ -97,7 +97,8 @@ export class AppTotalIncomeComponent implements OnInit {
     }
 
     /**
-     * Obtiene los datos del usuario desde el backend
+     * Obtiene los datos del usuario desde el backend 
+     * 
      */
     obtenerDatosUsuario(): void {
         if (!this.usuario) {

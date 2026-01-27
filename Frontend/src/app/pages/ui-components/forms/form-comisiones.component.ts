@@ -16,6 +16,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
+// 
 
 interface pago {
   value: string;

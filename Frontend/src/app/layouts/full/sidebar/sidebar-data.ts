@@ -78,15 +78,6 @@ export const navItems: NavItem[] = [
   //},
  
 
-  // {
-  //   displayName: 'Seleccionar taxistas',
-  //   iconName: 'solar:chat-round-line-line-duotone',
-  //   route: '/dashboard/view/listado-taxistas',
-  //   // chip: true,
-  //   external: true,
-  //   chipClass: 'bg-secondary text-white',
-  //   // chipContent: 'PRO',
-  // },
   {
     navCap: 'Comisiones',
 

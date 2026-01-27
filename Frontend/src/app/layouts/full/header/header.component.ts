@@ -32,21 +32,21 @@ export class HeaderComponent {
   @Output() toggleMobileNav = new EventEmitter<void>();
 
   constructor(private sessionService: SessionService, private router: Router) { }
-  ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    // this.sessionService.checkSession().subscribe((res: any) => {
-    //   if (res.loggedIn) {
-    //     console.log('Sesión activa:', res.user);
-    //     // Aquí puedes redirigir al usuario a otra página si ya está logueado
-    //     // Por ejemplo, redirigir al dashboard
-    //     // this.router.navigate(['/dashboard']);
-    //     //  return this.router.navigate(['/dashboard']); // o donde desees redirigir
-    //   } else {
-    //     console.log('No hay sesión activa');
-    //   }
-    // });
-  }
+  // ngOnInit(): void {
+  //   //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+  //   //Add 'implements OnInit' to the class.
+  //   // this.sessionService.checkSession().subscribe((res: any) => {
+  //   //   if (res.loggedIn) {
+  //   //     console.log('Sesión activa:', res.user);
+  //   //     // Aquí puedes redirigir al usuario a otra página si ya está logueado
+  //   //     // Por ejemplo, redirigir al dashboard
+  //   //     // this.router.navigate(['/dashboard']);
+  //   //     //  return this.router.navigate(['/dashboard']); // o donde desees redirigir
+  //   //   } else {
+  //   //     console.log('No hay sesión activa');
+  //   //   }
+  //   // });
+  // }
 
 logout() {
   const accesoId = localStorage.getItem('acceso_id');

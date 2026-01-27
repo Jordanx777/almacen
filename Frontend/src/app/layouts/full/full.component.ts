@@ -35,7 +35,6 @@ const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
     TablerIconsModule,
     HeaderComponent,
     AppTopstripComponent,
-    // AppTablesComponent
   ],
   templateUrl: './full.component.html',
   styleUrls: [],

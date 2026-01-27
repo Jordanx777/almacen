@@ -19,6 +19,7 @@ export interface UsuarioData {
 }
 
 
+
 const USUARIOS: string[] = ['DondeOlano', 'cmartinez', 'jperez', 'acastro', 'lrodriguez'];
 const ESTADOS: string[] = ['Activo', 'Inactivo'];
 

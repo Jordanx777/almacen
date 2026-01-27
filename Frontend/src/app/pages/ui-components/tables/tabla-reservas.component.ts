@@ -15,7 +15,7 @@ import { U } from '@angular/cdk/unique-selection-dispatcher.d-DSFqf1MM';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
-
+// ========================= */
 export interface UserData {
   id?: number; // Agregado para manejar la eliminación
   nombre: string;

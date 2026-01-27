@@ -24,6 +24,7 @@ import { H } from '@angular/cdk/keycodes';
 import { HistorialComisionesComponent } from './tables/historial-comisiones/historial-comisiones.component';
 import { ReportePagosComponent } from './tables/historial-comisiones/reporte-pago/reporte-pago.component';
 
+// landing
 export const landingRoutes: Routes = [
   {
     path: '',
@@ -155,14 +156,3 @@ export const UiComponentsRoutes: Routes = [
     ],
   },
 ];
-// export const landingRoutes: Routes = [
-//   {
-//     path: '',
-//     children: [
-//       {
-//         path: 'landing-page',
-//         component: AppBadgeComponent,
-//       },
-//     ],
-//   },
-// ];

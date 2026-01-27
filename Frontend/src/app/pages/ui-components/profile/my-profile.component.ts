@@ -73,9 +73,6 @@ export class MyProfileComponent {
     const session = localStorage.getItem('session');
     if (session) {
       this.sessionObj = JSON.parse(session);
-      console.log('Usuario en sesión desde taxista:', this.sessionObj.user.username);
-      console.log('ID de usuario:', this.sessionObj.user.company_name);
-      console.log('Company code:', this.sessionObj.user.company_code);
       this.usuario = this.sessionObj.user.company_code;
 
     } else {

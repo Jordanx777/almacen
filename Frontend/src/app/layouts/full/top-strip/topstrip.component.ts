@@ -20,20 +20,9 @@ export class AppTopstripComponent implements OnInit {
         if (session) {
             this.sessionObj = JSON.parse(session);
             console.log('Usuario en sesión:', this.sessionObj.user.username);
-            console.log('ID de usuario:', this.sessionObj.user.company_name);
         } else {
-            console.log('No hay usuario en sesión');
         }
 
-
-        // this.sessionService.checkSession().subscribe((res: any) => {
-        //     if (res.loggedIn) {
-        //         this.user = res.user;
-        //         console.log('Sesión activa:', this.user);
-        //     } else {
-        //         console.log('No hay sesión activa');
-        //     }
-        // });
     }
 
 
