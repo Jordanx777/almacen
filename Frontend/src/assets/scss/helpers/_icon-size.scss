@@ -2,6 +2,7 @@
 
 $columns: 60;
 
+// 
 @mixin icon_size {
   @for $i from 1 through $columns {
     .icon-#{$i} {

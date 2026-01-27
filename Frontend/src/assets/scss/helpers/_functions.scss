@@ -1,5 +1,6 @@
 @use "sass:map";
 
+// 
 // It makes the value negative.
 @function negativify-map($map) {
   $result: ();
