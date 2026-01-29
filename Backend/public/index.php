@@ -1,17 +1,7 @@
 <?php 
-//  header("Access-Control-Allow-Origin: http://localhost:4200");
-//  header("Access-Control-Allow-Credentials: true");
-//  header("Content-Type: application/json");
-
-//  echo json_encode([
-//    "status" => "ok",
-//    "message" => "Backend PHP funcionando 🚀"
-//  ]);
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Core\Router;
-use App\Config\Database;
 use App\Config\Cors;
 
 // Cargar variables de entorno
