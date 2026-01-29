@@ -5,41 +5,123 @@
         <mat-card-content class="p-32"> 
           <div class="or-border m-t-30">Registrate</div>
 
+          <!-- Mensaje de error -->
+          <div *ngIf="errorMessage" class="alert alert-danger m-t-20" role="alert">
+            {{ errorMessage }}
+          </div>
+
           <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
-            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Nombre</mat-label>
+            
+            <!-- Nombre -->
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Nombre *</mat-label>
             <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input matInput formControlName="uname" />
+              <input matInput formControlName="nombre" placeholder="Ej: Juan" />
+              <mat-error *ngIf="f['nombre'].hasError('required')">
+                El nombre es requerido
+              </mat-error>
+              <mat-error *ngIf="f['nombre'].hasError('minlength')">
+                Mínimo 3 caracteres
+              </mat-error>
             </mat-form-field>
 
-            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Correo Electrónico</mat-label>
+            <!-- Apellido -->
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Apellido *</mat-label>
             <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input matInput type="email" formControlName="email" />
-            </mat-form-field>
-            <!-- Nombre de la empresa -->
-            <!-- <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Nombre de la Empresa</mat-label>
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input matInput formControlName="companyName" />
-            </mat-form-field> -->
-
-            <!-- password -->
-            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Contraseña</mat-label>
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input matInput type="password" formControlName="password" />
+              <input matInput formControlName="apellido" placeholder="Ej: Pérez" />
+              <mat-error *ngIf="f['apellido'].hasError('required')">
+                El apellido es requerido
+              </mat-error>
+              <mat-error *ngIf="f['apellido'].hasError('minlength')">
+                Mínimo 3 caracteres
+              </mat-error>
             </mat-form-field>
 
-            <button type="submit" mat-flat-button color="primary" class="w-100">
-              Crear cuenta
+            <!-- Rol (Select desde BD) -->
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Rol *</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-select formControlName="id_rol" placeholder="Selecciona un rol">
+                <mat-option *ngFor="let rol of roles" [value]="rol.id_rol">
+                  {{ rol.nombre }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="f['id_rol'].hasError('required')">
+                Selecciona un rol
+              </mat-error>
+            </mat-form-field>
+            
+            <!-- Teléfono -->
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Teléfono *</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput formControlName="telefono" placeholder="Ej: 3001234567" />
+              <mat-error *ngIf="f['telefono'].hasError('required')">
+                El teléfono es requerido
+              </mat-error>
+              <mat-error *ngIf="f['telefono'].hasError('minlength') || f['telefono'].hasError('maxlength')">
+                Debe tener entre 10 y 15 dígitos
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Email -->
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Correo Electrónico *</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput type="email" formControlName="email" placeholder="ejemplo@correo.com" />
+              <mat-error *ngIf="f['email'].hasError('required')">
+                El correo es requerido
+              </mat-error>
+              <mat-error *ngIf="f['email'].hasError('email')">
+                Correo inválido
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Password -->
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Contraseña *</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput type="password" formControlName="password" placeholder="Mínimo 6 caracteres" />
+              <mat-error *ngIf="f['password'].hasError('required')">
+                La contraseña es requerida
+              </mat-error>
+              <mat-error *ngIf="f['password'].hasError('minlength')">
+                Mínimo 6 caracteres
+              </mat-error>
+            </mat-form-field>
+
+            <!-- comfirmar contraseña -->
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Confirmar Contraseña *</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput type="password" formControlName="confirmPassword" placeholder="Mínimo 6 caracteres" />
+              <mat-error *ngIf="f['confirmPassword'].hasError('required')">
+                La confirmación de la contraseña es requerida
+              </mat-error>
+              <mat-error *ngIf="f['confirmPassword'].hasError('minlength')">
+                Mínimo 6 caracteres
+              </mat-error>
+              <mat-error *ngIf="form.hasError('passwordMismatch')">
+                Las contraseñas no coinciden
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Botón -->
+            <button 
+              type="submit" 
+              mat-flat-button 
+              color="primary" 
+              class="w-100"
+              [disabled]="loading"
+            >
+              <span *ngIf="!loading">Crear cuenta</span>
+              <span *ngIf="loading">Creando cuenta...</span>
             </button>
-            <!-- input -->
           </form>
-          <span class="d-block f-w-500 text-center m-t-24">Ya tienes una cuenta?
 
+          <span class="d-block f-w-500 text-center m-t-24">
+            ¿Ya tienes una cuenta?
             <a [routerLink]="['/authentication/login']" class="text-decoration-none text-primary f-w-500 f-s-14">
-              Iniciar sesión</a>
-
+              Iniciar sesión
+            </a>
             <br>
-            <a [routerLink]="['/dashboard']" class="text-decoration-none text-primary f-w-500 f-s-14"> Volver</a>
-            <br>
+            <a [routerLink]="['/dashboard']" class="text-decoration-none text-primary f-w-500 f-s-14">
+              Volver
+            </a>
           </span>
         </mat-card-content>
       </mat-card>
