@@ -12,7 +12,6 @@ export interface User {
   id_rol: number;
   rol_nombre: string;
   activo: boolean;
-  verificado: boolean;
 }
 
 export interface RegisterData {
