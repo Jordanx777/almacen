@@ -56,6 +56,7 @@ export class AppSideRegisterComponent implements OnInit {
       confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
       telefono: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15)]],
       id_rol: ['', [Validators.required]]
+
     });
   }
 
@@ -76,6 +77,13 @@ export class AppSideRegisterComponent implements OnInit {
   get f() {
     return this.form.controls;
   }
+// hago la comparacion de las contraseñas en el front 
+  get passwordMismatch(): boolean {
+    return this.form.value.password !== this.form.value.confirmPassword;
+  }
+  // manejo la comparacion del form.hasError('passwordMismatch'); en el formulario 
+
+
 
   submit(): void {
     if (this.form.invalid) {
@@ -101,7 +109,6 @@ export class AppSideRegisterComponent implements OnInit {
     this.authService.register(registerData).subscribe({
       next: (response) => {
         if (response.status === 'success') {
-          console.log('Registro exitoso', response);
           this.router.navigate(['/dashboard']);
         } else {
           this.errorMessage = response.message || 'Error al registrar usuario';
