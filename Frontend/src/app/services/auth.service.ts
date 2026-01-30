@@ -37,6 +37,7 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private apiService: ApiService) {
+    // console.log('🔧 AuthService - Inicializando...');
     this.checkAuthStatus();
   }
 
@@ -44,7 +45,9 @@ export class AuthService {
   register(data: RegisterData): Observable<any> {
     return this.apiService.post('/api/auth/register', data).pipe(
       tap((response: any) => {
+        // console.log('📝 AuthService - Respuesta de registro:', response);
         if (response.status === 'success') {
+          // console.log('✅ AuthService - Usuario registrado:', response.data.user);
           this.currentUserSubject.next(response.data.user);
         }
       })
@@ -55,8 +58,11 @@ export class AuthService {
   login(data: LoginData): Observable<any> {
     return this.apiService.post('/api/auth/login', data).pipe(
       tap((response: any) => {
+        // console.log('🔐 AuthService - Respuesta de login:', response);
         if (response.status === 'success') {
+          // console.log('✅ AuthService - Actualizando usuario actual:', response.data.user);
           this.currentUserSubject.next(response.data.user);
+          // console.log('✅ AuthService - Usuario actualizado en BehaviorSubject');
         }
       })
     );
@@ -66,6 +72,7 @@ export class AuthService {
   logout(): Observable<any> {
     return this.apiService.post('/api/auth/logout', {}).pipe(
       tap(() => {
+        // console.log('👋 AuthService - Cerrando sesión...');
         this.currentUserSubject.next(null);
       })
     );
@@ -73,13 +80,20 @@ export class AuthService {
 
   // Verificar estado de autenticación
   checkAuthStatus(): void {
+    // console.log('🔍 AuthService - Verificando sesión en el servidor...');
     this.apiService.get<any>('/api/auth/me').subscribe({
       next: (response) => {
+        // console.log('📥 AuthService - Respuesta de /me:', response);
         if (response.status === 'success') {
+          // console.log('✅ AuthService - Sesión activa:', response.data.user);
           this.currentUserSubject.next(response.data.user);
+        } else {
+          // console.log('❌ AuthService - No hay sesión activa');
+          this.currentUserSubject.next(null);
         }
       },
-      error: () => {
+      error: (error) => {
+        console.error('❌ AuthService - Error al verificar sesión:', error);
         this.currentUserSubject.next(null);
       }
     });
@@ -87,11 +101,15 @@ export class AuthService {
 
   // Obtener usuario actual
   getCurrentUser(): User | null {
-    return this.currentUserSubject.value;
+    const user = this.currentUserSubject.value;
+    // console.log('👤 AuthService - Usuario actual:', user);
+    return user;
   }
 
   // Verificar si está autenticado
   isAuthenticated(): boolean {
-    return this.currentUserSubject.value !== null;
+    const isAuth = this.currentUserSubject.value !== null;
+    // console.log('🔒 AuthService - ¿Está autenticado?', isAuth);
+    return isAuth;
   }
 }
