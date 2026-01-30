@@ -19,7 +19,7 @@ import { TablaReservasComponent } from './tables/tabla-reservas.component';
 import { EstadisticasComponent } from './estadisticas/estadisticas.component';
 import { TablaAdministracionComponent } from './tables/tabla-administracion.component';
 import { MyProfileComponent } from './profile/my-profile.component';
-import { AuthGuard } from '../authentication/auth.guard';
+import { authGuard } from '../../guards/auth.guard';
 import { H } from '@angular/cdk/keycodes';
 import { HistorialComisionesComponent } from './tables/historial-comisiones/historial-comisiones.component';
 import { ReportePagosComponent } from './tables/historial-comisiones/reporte-pago/reporte-pago.component';
@@ -45,17 +45,17 @@ export const UiComponentsRoutes: Routes = [
       {
         path: 'badge',
         component: AppBadgeComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'estadisticas',
         component: EstadisticasComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'my-profile',
         component: MyProfileComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'administracion',
@@ -65,93 +65,93 @@ export const UiComponentsRoutes: Routes = [
       {
         path: 'chips',
         component: AppChipsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'tabla-productos',
         component: TablaProductosComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'tabla-reservas',
         component: TablaReservasComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'lists',
         component: AppListsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'menu',
         component: AppMenuComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'tooltips',
         component: AppTooltipsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'form-producto',
         component: AppFormsProductoComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'editar-taxista/:cedula',
         component: AppFormsProductoComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
 
       {
         path: 'form-reserva',
         component: FormAddReservaComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'editar-reserva/:cedula',
         component: FormAddReservaComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'add-comisiones/:cedula',
         component: AppFormComisionesComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'form-comisiones',
         component: AppFormComisionesComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'historial-comisiones/:cedula',
         component: HistorialComisionesComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'editar-comisiones/:cedula',
         component: AppFormComisionesComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'tables',
         component: AppTablesComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'listado-taxistas',
         component: AppBlogCardsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'registro-salidas',
         component: AppTotalIncomeComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
       {
         path: 'reporte-comisiones',
         component: ReportePagosComponent,
-        canActivate: [AuthGuard]
+        canActivate: [authGuard]
       },
     ],
   },
