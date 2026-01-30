@@ -2,20 +2,40 @@
 namespace App\Controllers;
 
 use App\Models\UsuarioModel;
-use App\Models\RolModel;
+
 
 class AuthController {
     
     // POST /api/auth/register
     public function register(): void {
+        // ✅ Asegurar que siempre retorne JSON
+        header('Content-Type: application/json; charset=UTF-8');
+        
         try {
+            error_log("=== INICIO REGISTRO ===");
+            
             // Obtener datos del JSON
-            $input = json_decode(file_get_contents('php://input'), true);
+            $rawInput = file_get_contents('php://input');
+            error_log("Raw input: " . $rawInput);
+            
+            $input = json_decode($rawInput, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                http_response_code(400);
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'JSON inválido: ' . json_last_error_msg()
+                ]);
+                return;
+            }
+            
+            error_log("Input decodificado: " . json_encode($input));
             
             // Validar datos requeridos
-            $requiredFields = ['nombre', 'apellido', 'email', 'password', 'telefono', 'id_rol'];
+            $requiredFields = ['nombre', 'apellido', 'email', 'password', 'confirmPassword', 'telefono', 'id_rol'];
+            
             foreach ($requiredFields as $field) {
-                if (empty($input[$field])) {
+                if (!isset($input[$field]) || trim($input[$field]) === '') {
                     http_response_code(400);
                     echo json_encode([
                         'status' => 'error',
@@ -44,18 +64,34 @@ class AuthController {
                 ]);
                 return;
             }
+
+            // Comparar las contraseñas
+            if ($input['password'] !== $input['confirmPassword']) {
+                http_response_code(400);
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Las contraseñas no coinciden'
+                ]);
+                return;
+            }
+            
+            error_log("Validaciones pasadas, creando modelo...");
             
             $usuarioModel = new UsuarioModel();
             
+            error_log("Modelo creado, verificando email...");
+            
             // Verificar si el email ya existe
             if ($usuarioModel->existsByEmail($input['email'])) {
-                http_response_code(409); // Conflict
+                http_response_code(409);
                 echo json_encode([
                     'status' => 'error',
                     'message' => 'El correo electrónico ya está registrado'
                 ]);
                 return;
             }
+            
+            error_log("Email disponible, hasheando contraseña...");
             
             // Hash de la contraseña
             $passwordHash = password_hash($input['password'], PASSWORD_BCRYPT);
@@ -69,11 +105,16 @@ class AuthController {
                 'telefono' => trim($input['telefono']),
                 'id_rol' => (int)$input['id_rol'],
                 'activo' => true,
-                'verificado' => false
+                
             ];
+            
+            error_log("Datos preparados: " . json_encode($userData));
+            error_log("Creando usuario en BD...");
             
             // Crear usuario
             $userId = $usuarioModel->create($userData);
+            
+            error_log("Usuario creado con ID: $userId");
             
             if ($userId) {
                 // Obtener usuario completo (sin contraseña)
@@ -85,6 +126,8 @@ class AuthController {
                 $_SESSION['user_email'] = $user['correo'];
                 $_SESSION['user_role'] = $user['id_rol'];
                 
+                error_log("Sesión iniciada, retornando respuesta...");
+                
                 http_response_code(201);
                 echo json_encode([
                     'status' => 'success',
@@ -94,10 +137,20 @@ class AuthController {
                     ]
                 ]);
             } else {
-                throw new \Exception('Error al crear el usuario');
+                throw new \Exception('Error al crear el usuario - ID null');
             }
             
+        } catch (\PDOException $e) {
+            error_log("❌ PDO Exception: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Error de base de datos',
+                'error' => $e->getMessage()
+            ]);
         } catch (\Exception $e) {
+            error_log("❌ Exception: " . $e->getMessage());
+            error_log("Stack trace: " . $e->getTraceAsString());
             http_response_code(500);
             echo json_encode([
                 'status' => 'error',
