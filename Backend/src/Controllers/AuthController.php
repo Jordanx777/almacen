@@ -213,7 +213,7 @@ class AuthController {
             $_SESSION['user_role'] = $user['id_rol'];
             
             // Actualizar último acceso
-            $usuarioModel->updateLastAccess($user['id_usuario']);
+            // $usuarioModel->updateLastAccess($user['id_usuario']);
             
             // Quitar contraseña antes de enviar
             unset($user['contrasena']);
