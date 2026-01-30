@@ -1,0 +1,9 @@
+# .dockerignore
+node_modules
+.angular
+dist
+.git
+.vscode
+*.log
+npm-debug.log*
+.gitignore

@@ -1,0 +1,59 @@
+table {
+  width: 100%;
+}
+
+.caja{
+  margin-top: 1%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+.icon-clean-button {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-width: unset;
+  width: auto;
+  height: auto;
+}
+
+.editar:hover {
+  color: rgb(228, 188, 13);
+}
+
+.eliminar:hover {
+  color: rgb(255, 0, 0);
+}
+
+.activo {
+  color: green;
+  font-weight: bold;
+}
+
+.inactivo {
+  color: red;
+  font-weight: bold;
+}
+
+/* ==== NUEVOS ESTILOS AGREGADOS ==== */
+.btn-verde {
+  background-color: #28a745 !important;
+  color: white;
+}
+
+.btn-verde:hover {
+  background-color: #218838 !important;
+}
+
+.btn-azul {
+  background-color: #007bff !important;
+  color: white;
+}
+
+.btn-azul:hover {
+  background-color: #0056b3 !important;
+}

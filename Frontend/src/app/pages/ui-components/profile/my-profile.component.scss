@@ -1,0 +1,77 @@
+.perfil-card {
+  max-width: 500px;
+  margin: auto;
+  padding: 1rem;
+
+  mat-card-header {
+    padding-bottom: 0.5rem;
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+  }
+
+  .nombre-admin {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    color: #1a70aa;
+  }
+
+  .rol-admin {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 2px;
+  }
+
+  .bloque {
+    margin: 1rem 0 0.5rem;
+
+    .bloque-titulo {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin: 0.25rem 0;
+      color: #555;
+      font-size: 0.9rem;
+    }
+  }
+
+  .stats {
+    gap: 1rem;
+
+    h4.valor {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0;
+      color: #1a70aa;
+    }
+
+    small {
+      font-size: 0.75rem;
+      color: #555;
+    }
+
+    
+  }
+
+  .acciones {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      flex: 1;
+      margin: 0 4px;
+    }
+  }
+}
+
+// ========================

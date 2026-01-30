@@ -1,0 +1,188 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <mat-card-title >Tabla de comisiones</mat-card-title>
+    <!-- <button mat-raised-button color="primary" (click)="cargarDatos()"> Recargar</button> -->
+
+    <!-- Buscador alineado a la derecha -->
+    <form [formGroup]="formBuscar">
+
+      <div id="pru"  class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-4 centrar-todo">
+        
+
+      <!-- Filtro a la izquierda -->
+      <div class="caja">
+        <mat-form-field appearance="outline" color="primary" style="width: 120px; margin: 0;">
+          <mat-label>Buscar</mat-label>
+          <input formControlName="cedula" matInput #pruebita type="text" placeholder="Buscar..." />
+          <mat-error>Este campo es requerido.</mat-error>
+          <button mat-icon-button matSuffix aria-label="Buscar">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+          <!-- Botones a la derecha -->
+      <div id="prueba" class="d-flex align-items-center gap-2 flex-wrap">
+        <!-- Botón verde -->
+        <button mat-raised-button matTooltip="Exportar Excel" class="btn-verde d-flex align-items-center" (click)="exportarExcel()">
+          <mat-icon>file_download</mat-icon>
+          <span class="ms-1">Exportar Excel</span>
+        </button>
+
+        <!-- Botón azul -->
+        <button mat-raised-button matTooltip="Agregar Comisión" class="btn-azul d-flex align-items-center" (click)="irAgregarComisiones()">
+          <mat-icon>add</mat-icon>
+          <span class="ms-1">Agregar Comisión</span>
+        </button>
+      </div>
+    
+     
+
+    </div>
+
+     
+
+    </form>
+
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource1" class="w-100">
+        <!-- Position Column -->
+        <ng-container matColumnDef="assigned">
+          <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14 p-l-0">
+            Nombre
+          </th>
+          <td mat-cell *matCellDef="let element" class="p-l-0">
+            <div class="d-flex align-items-center">
+              <img [src]="'/assets/images/profile/user-' + imagenesPorId[element.id] + '.jpg'" width="60"
+                class="rounded" />
+              <div class="m-l-16">
+                <h6 class="f-s-14 f-w-600">
+                  {{ element.title }}
+                </h6>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14">
+            pagado / por pagar / total
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <h6 class=" f-s-16 m-b-4">
+              <span class="text-dark f-w-600">
+                $ {{ element.pagado | number:'1.0-0' }}
+              </span>
+              <span class="text-dark f-w-600">
+                / $ {{ element.total - element.pagado | number:'1.0-0' }}
+              </span>
+              / $ {{element.total | number:'1.0-0' }}
+            </h6>
+
+            <ng-container *ngIf="element.pagado === 0 && element.total === 0">
+              <span class="f-s-14 f-w-500 d-block m-b-4">No registran pagos.</span>
+              <mat-progress-bar mode="determinate" class="mat-error" color="accent" [value]="0"
+                [ariaValueMax]="element.total">
+              </mat-progress-bar>
+            </ng-container>
+
+            <ng-container *ngIf="element.pagado === element.total && element.total > 0">
+              <span class="f-s-14 f-w-500 d-block m-b-4">Completado</span>
+              <mat-progress-bar mode="determinate" class="mat-success" color="primary" [value]="100"
+                [ariaValueMax]="element.total">
+              </mat-progress-bar>
+            </ng-container>
+
+            <ng-container *ngIf="element.pagado > 0 && element.pagado < element.total">
+              <span class="f-s-14 f-w-500 d-block m-b-4">Parcialmente pagado</span>
+              <mat-progress-bar mode="determinate" class="mat-error" color="accent"
+                [value]="(element.pagado / element.total) * 100" [ariaValueMax]="element.total">
+              </mat-progress-bar>
+            </ng-container>
+
+            <ng-container *ngIf="element.pagado === 0 && element.total > 0">
+              <span class="f-s-14 f-w-500 d-block m-b-4">Cancelled</span>
+              <mat-progress-bar class="mat-warning" mode="determinate" color="warn" [value]="0"
+                [ariaValueMax]="element.total">
+              </mat-progress-bar>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Priority Column -->
+        <ng-container matColumnDef="priority">
+          <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14">
+            Estado
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="element.pagado === 0 && element.total === 0">
+              <span class="bg-light-warning text-warning rounded f-w-600 p-6 p-y-4 f-s-12">
+                {{ 'No registran pagos.' | titlecase }}
+              </span>
+            </ng-container>
+            <ng-container *ngIf="element.pagado === 0 && element.total > 0">
+              <span class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12">
+                {{ 'No comenzado' | titlecase }}
+              </span>
+            </ng-container>
+            <ng-container *ngIf="element.pagado > 0 && element.pagado < element.total">
+              <span class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12">
+                {{ 'En proceso' | titlecase }}
+              </span>
+            </ng-container>
+            <ng-container *ngIf="element.pagado === element.total && element.total > 0">
+              <span class="bg-light-success text-success rounded f-w-600 p-6 p-y-4 f-s-12">
+                {{ 'Completado' | titlecase }}
+              </span>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Options Column -->
+        <ng-container matColumnDef="budget">
+          <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14"></th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button *ngIf="element.pagado < element.total" mat-menu-item (click)="pagarCompleto(element)">
+                <mat-icon>payment</mat-icon>
+                <span>Pago Total</span>
+              </button>
+              <button *ngIf="element.pagado < element.total" mat-menu-item (click)="abonar(element)">
+                <mat-icon>attach_money</mat-icon>
+                <span>Abonar</span>
+              </button>
+              <button mat-menu-item (click)="abrirFormulario(element)">
+                <mat-icon>add</mat-icon>
+                <span>Agregar Comisión</span>
+              </button>
+              <button mat-menu-item (click)="verHistorial(element)">
+                <mat-icon>history</mat-icon>
+                <span>Historial</span>
+              </button>
+              <!-- <button mat-menu-item (click)="eliminar(element)">
+                <mat-icon>delete</mat-icon>
+                <span>Eliminar</span>
+              </button> -->
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell text-center" colspan="7">No hay coincidencias.</td>
+        </tr>
+      </table>
+      <!-- <div *ngIf="dataSource1.data.length === 0" class="no-resultados text-center">
+        No hay coincidencias.
+      </div> -->
+
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

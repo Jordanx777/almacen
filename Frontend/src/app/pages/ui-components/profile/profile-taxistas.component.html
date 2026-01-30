@@ -1,0 +1,39 @@
+<mat-card class="cardWithShadow theme-card perfil-card">
+  <!-- Botón para cerrar -->
+  <button mat-icon-button class="btn-cerrar" (click)="cerrarPerfil()">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <!-- Encabezado -->
+  <mat-card-header class="d-flex flex-column align-items-center text-center">
+    <img mat-card-avatar src="https://avatar.iran.liara.run/public/10" alt="Foto taxista" class="avatar">
+    <mat-card-title class="nombre-admin">{{ data.nombre }}</mat-card-title>
+    <mat-card-subtitle class="rol-admin">Taxista</mat-card-subtitle>
+  </mat-card-header>
+
+  <!-- Contenido -->
+  <mat-card-content>
+    <div class="bloque">
+      <h4 class="bloque-titulo">Datos personales</h4>
+      <p><strong>Cédula:</strong> {{ data.cedula }}</p>
+      <p><strong>Teléfono:</strong> {{ data.telefono }}</p>
+      <p><strong>Sexo:</strong> {{ data.sexo }}</p>
+      <p><strong>Fecha de nacimiento:</strong> {{ data.fecha_nacimiento }}</p>
+      <p><strong>Placa:</strong> {{ data.numero_placa }}</p>
+    </div>
+
+    <div class="bloque">
+      <h4 class="bloque-titulo">Contacto</h4>
+      <p><strong>Email:</strong> {{ data.email || 'N/A' }}</p>
+      <p><strong>Teléfono:</strong> {{ data.telefono }}</p>
+    </div>
+  </mat-card-content>
+
+  <!--  -->
+
+  <!-- Acciones -->
+  <mat-card-actions class="acciones">
+    <button mat-stroked-button color="primary" (click)="editarTaxista(data)">Editar Taxista</button>
+    <button mat-flat-button color="warn" (click)="abrirFormulario(data)">Agregar Comisión</button>
+  </mat-card-actions>
+</mat-card>

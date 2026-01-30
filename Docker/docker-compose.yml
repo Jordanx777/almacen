@@ -1,0 +1,79 @@
+services:
+  frontend:
+    build: ../frontend
+    container_name: angular_app
+    ports:
+      - "4200:4200"
+    volumes:
+      - ../frontend/src:/app/src
+      - /app/node_modules
+      - /app/.angular
+      - /app/dist
+    depends_on:
+      postgres:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    environment:
+      - NODE_OPTIONS=--max_old_space_size=8192
+      - NG_CLI_ANALYTICS=false
+    deploy: 
+      resources:
+        limits:
+          memory: 8G 
+          cpus: '4' 
+        reservations:
+          memory: 4G
+    restart: on-failure:3
+    stdin_open: true
+    tty: true
+
+  backend:
+    build: ../backend
+    container_name: php_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ../backend:/var/www/html
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=app_db
+      - DB_USER=app_user
+      - DB_PASSWORD=secret
+
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5433:5432"
+    volumes:
+      - almacen_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_user -d app_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5051:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  almacen_pgdata:

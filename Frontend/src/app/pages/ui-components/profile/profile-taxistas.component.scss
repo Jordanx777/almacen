@@ -1,0 +1,115 @@
+:host {
+  display: block;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.perfil-card {
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-header {
+  padding: 24px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nombre-admin {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+}
+
+.rol-admin {
+  font-size: 14px;
+  color: #888;
+}
+
+mat-card-content {
+  flex: 1;
+  padding: 16px;
+  overflow: hidden; // <- aquí se elimina el scroll
+}
+
+.bloque {
+  margin-bottom: 24px;
+
+  p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #444;
+
+    strong {
+      color: #222;
+    }
+  }
+}
+
+.bloque-titulo {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.acciones {
+  padding: 16px;
+  margin-top: -20px;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    flex: 1;
+    margin: 0 6px;
+  }
+}
+
+.cardWithShadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+
+.btn-cerrar {
+  // position: absolute;
+  top: 60px;        // un poco más abajo desde la parte superior
+  left: 82.5%;      // separado del borde derecho
+  background: white;
+  border-radius: 50%;
+
+}
+
+/* Tablets (≤ 1024px) */
+@media (max-width: 1024px) {
+  .btn-cerrar {
+    top: 50px;
+  }
+}
+
+/* Móviles grandes (≤ 768px) */
+@media (max-width: 768px) {
+  .btn-cerrar {
+    top: 40px;
+  }
+}
+
+/* Móviles pequeños (≤ 480px) */
+@media (max-width: 480px) {
+  .btn-cerrar {
+    top: 50px;
+  }
+}
+
+// ========================
