@@ -74,7 +74,8 @@ export class ApiService {
       modal: {
         title: 'Error de conexión',
         message: 'No se pudo contactar con el servidor',
-        type: 'error'
+        type: 'error',
+        error: error
       }
     });
   }
