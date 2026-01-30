@@ -95,6 +95,7 @@
               <mat-error *ngIf="f['confirmPassword'].hasError('minlength')">
                 Mínimo 6 caracteres
               </mat-error>
+              <!-- Validación de coincidencia de contraseñas -->
               <mat-error *ngIf="form.hasError('passwordMismatch')">
                 Las contraseñas no coinciden
               </mat-error>
