@@ -1,21 +1,4 @@
 <?php
-// $host = getenv('HOST');
-// $port = getenv('PORT');
-// $dbname = getenv('DBNAME');
-// $user = getenv('USER');
-// $password = getenv('PASSWORD');
-
-// use PDO;
-// use PDOException;
-
-// try {
-//     $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
-//     $pdo = new PDO($dsn, $user, $password);
-//     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-//     echo "Conexión exitosa";
-// } catch (PDOException $e) {
-//     echo "Error: " . $e->getMessage();
-// }
 namespace App\Config;
 
 use PDO;
@@ -38,8 +21,6 @@ class Database {
                 
                 // 4️⃣ Crea el string de conexión para PostgreSQL
                 $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
-
-                error_log("Intentando conectar a la base de datos con DSN: $dsn", 0);
                 
                 // 5️⃣ Crea la conexión PDO con opciones de seguridad
                 self::$instance = new PDO($dsn, $user, $password, [
@@ -47,8 +28,6 @@ class Database {
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, // Retorna arrays asociativos
                     PDO::ATTR_EMULATE_PREPARES => false, // Usa prepared statements reales
                 ]);
-// verifico que la conexion se de correctamente
-                // echo "Conexión exitosa a la base de datos.";
 
                 
             } catch (PDOException $e) {
@@ -58,7 +37,6 @@ class Database {
         
         // 6️⃣ Retorna la conexión (siempre la misma instancia)
         return self::$instance;
-        error_log("Conexión a la base de datos establecida.", 0);
     }
 }
 ?>
