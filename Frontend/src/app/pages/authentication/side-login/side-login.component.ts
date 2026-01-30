@@ -40,7 +40,6 @@ export class AppSideLoginComponent implements OnDestroy {
     if (session.loggedIn) {
       this.router.navigate(['/dashboard']);
     } else {
-      console.log('No hay sesión activa');
     }
   }
 
