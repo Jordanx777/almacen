@@ -3,6 +3,7 @@ import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { PreciosComponent } from './pages/ui-components/servicios/precios/precios.component';
+import { authGuard } from './guards/auth.guard'; // ← Importar desde guards/
 
 export const routes: Routes = [
   {
@@ -16,19 +17,20 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: FullComponent,
+    canActivate: [authGuard], // ← Usar el guard correcto
     children: [
       {
         path: '',
-        redirectTo: 'starter', // ← Redirigir a página específica
+        redirectTo: 'starter',
         pathMatch: 'full',
       },
       {
-        path: 'starter', // ← Ruta específica para páginas
+        path: 'starter',
         loadChildren: () =>
           import('./pages/pages.routes').then((m) => m.PagesRoutes),
       },
       {
-        path: 'ui-components', // ← Ruta específica para UI components
+        path: 'ui-components',
         loadChildren: () =>
           import('./pages/ui-components/ui-components.routes').then(
             (m) => m.UiComponentsRoutes
