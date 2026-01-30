@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   ViewEncapsulation,
+  OnInit
 } from '@angular/core';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { MaterialModule } from 'src/app/material.module';
@@ -11,10 +12,13 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MatBadgeModule } from '@angular/material/badge';
-import { SessionService } from '../../../services/session.service';
+import { AuthService, User } from '../../../services/auth.service';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [
     RouterModule,
     CommonModule,
@@ -26,45 +30,54 @@ import { SessionService } from '../../../services/session.service';
   templateUrl: './header.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @Input() showToggle = true;
   @Input() toggleChecked = false;
   @Output() toggleMobileNav = new EventEmitter<void>();
 
-  constructor(private sessionService: SessionService, private router: Router) { }
-  // ngOnInit(): void {
-  //   //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-  //   //Add 'implements OnInit' to the class.
-  //   // this.sessionService.checkSession().subscribe((res: any) => {
-  //   //   if (res.loggedIn) {
-  //   //     console.log('Sesión activa:', res.user);
-  //   //     // Aquí puedes redirigir al usuario a otra página si ya está logueado
-  //   //     // Por ejemplo, redirigir al dashboard
-  //   //     // this.router.navigate(['/dashboard']);
-  //   //     //  return this.router.navigate(['/dashboard']); // o donde desees redirigir
-  //   //   } else {
-  //   //     console.log('No hay sesión activa');
-  //   //   }
-  //   // });
-  // }
-
-logout() {
-  const accesoId = localStorage.getItem('acceso_id');
-
-  if (accesoId) {
-    this.sessionService.registrarSalida(Number(accesoId)).subscribe({
-      next: () => console.log('Hora de salida registrada'),
-      error: (err) => console.error('Error al registrar salida:', err)
-    });
+  currentUser$: Observable<User | null>;
+  
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.currentUser$ = this.authService.currentUser$;
   }
 
-  this.sessionService.logout();
-  console.log('Sesión cerrada');
+  ngOnInit(): void {
+    // El usuario ya está disponible vía currentUser$
+  }
 
-  this.router.navigate(['/authentication/side-login']).then(() => {
-    console.log('Redirigido a la página de login');
-  });
-}
-
-
+  logout(): void {
+    Swal.fire({
+      title: '¿Cerrar sesión?',
+      text: '¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, salir',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.logout().subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Sesión cerrada',
+              text: 'Has cerrado sesión exitosamente',
+              timer: 2000,
+              showConfirmButton: false
+            });
+            this.router.navigate(['/authentication/login']);
+          },
+          error: (error) => {
+            console.error('Error al cerrar sesión:', error);
+            // Igualmente cerrar sesión en el frontend
+            this.router.navigate(['/authentication/login']);
+          }
+        });
+      }
+    });
+  }
 }
