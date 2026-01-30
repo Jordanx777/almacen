@@ -1,103 +1,143 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../material.module';
-import { HttpClient } from '@angular/common/http';
-import { SessionService } from 'src/app/services/session.service';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
-
-interface ApiResponse {
-  success: boolean;
-  user?: any;
-  message?: string;
-  // puedes agregar más campos según lo que el backend devuelva
-}
 
 @Component({
   selector: 'app-side-login',
-  imports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './side-login.component.html',
 })
-export class AppSideLoginComponent implements OnDestroy {
+export class AppSideLoginComponent implements OnInit, OnDestroy {
+  
   form: FormGroup;
-  hidePassword = true;  // <-- Aquí declaras la variable para mostrar/ocultar contraseña
+  hidePassword = true;
+  loading = false;
+  errorMessage = '';
   private destroy$ = new Subject<void>();
 
-  constructor(private router: Router, private http: HttpClient, private fb: FormBuilder, private sessionService: SessionService) {
-    this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-    });
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) {
+    this.form = this.createForm();
   }
 
   ngOnInit(): void {
-    const session = this.sessionService.checkSession();
-    if (session.loggedIn) {
+    // console.log('🔍 Login - Verificando sesión...');
+    
+    // Verificar si ya hay sesión activa
+    if (this.authService.isAuthenticated()) {
+      // console.log('✅ Login - Ya hay sesión, redirigiendo a dashboard');
       this.router.navigate(['/dashboard']);
     } else {
+      // console.log('❌ Login - No hay sesión activa');
     }
+  }
+
+  private createForm(): FormGroup {
+    return this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
   }
 
   get f() {
     return this.form.controls;
   }
 
-  submit() {
+  submit(): void {
     if (this.form.invalid) {
+      Object.keys(this.form.controls).forEach(key => {
+        this.form.get(key)?.markAsTouched();
+      });
       return;
     }
 
-    const data = this.form.value;
-    const url = 'https://neocompanyapp.com/php/auth/login.php';
-    this.http.post<ApiResponse>(url, data, { withCredentials: true })
+    this.loading = true;
+    this.errorMessage = '';
+    this.form.disable();
+
+    const loginData = {
+      email: this.form.value.email,
+      password: this.form.value.password
+    };
+
+    // console.log('📤 Login - Enviando credenciales...', { email: loginData.email });
+
+    this.authService.login(loginData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: response => {
-          if (response.success) {
-            localStorage.setItem('session', JSON.stringify({
-              loggedIn: true,
-              user: response.user
-            }));
-            localStorage.setItem('acceso_id', response.user.acceso_id);
-
+        next: (response) => {
+          // console.log('📥 Login - Respuesta recibida:', response);
+          
+          if (response.status === 'success') {
+            // console.log('✅ Login - Exitoso, usuario:', response.data.user);
+            
             const Toast = Swal.mixin({
               toast: true,
-              position: "top-end",
+              position: 'top-end',
               showConfirmButton: false,
-              timer: 3000,
+              timer: 2000,
               timerProgressBar: true,
               didOpen: (toast: any) => {
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
               }
             });
-            // 
+
             Toast.fire({
-              icon: "success",
-              title: "Login exitoso",
+              icon: 'success',
+              title: `¡Bienvenido ${response.data.user.nombre}!`
             });
-            this.router.navigateByUrl('/dashboard', { replaceUrl: true });
+
+            // Esperar un momento para que el toast se muestre
+            setTimeout(() => {
+              // console.log('🚀 Login - Navegando a dashboard...');
+              this.router.navigate(['/dashboard']).then(success => {
+                // console.log('🚀 Login - Navegación completada:', success);
+              });
+            }, 500);
+
           } else {
+            // console.error('❌ Login - Error en respuesta:', response.message);
+            this.errorMessage = response.message || 'Error al iniciar sesión';
+            this.loading = false;
+            this.form.enable();
+            
             Swal.fire({
               icon: 'error',
-              title: response.message ? 'Error' : 'Error de autenticación',
-              text: response.message,
+              title: 'Error de autenticación',
+              text: this.errorMessage,
             });
           }
         },
         error: (error) => {
-          alert('Error al conectar con el servidor');
-          console.error(error);
+          console.error('❌ Login - Error de conexión:', error);
+          this.loading = false;
+          this.form.enable();
+          
+          this.errorMessage = 'Error al conectar con el servidor';
+          
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: this.errorMessage,
+          });
         }
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
